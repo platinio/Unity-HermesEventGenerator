@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 8868d493a4ec4cd8bc8506276a708964
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - m_ViewDataDictionary: {instanceID: 0}
+  - visualTreeAsset: {fileID: 9197481963319205126, guid: 38948951abf44a847b928c9e0a0a1371, type: 3}
+  - listElementTreeAsset: {fileID: 9197481963319205126, guid: 0d4e6bda20cc12f49a9fa303e75e4292, type: 3}
+  - GameEventDispatcherExtensionTemplate: {fileID: 4900000, guid: 1a198261874a4e0fa52d0adc6adab3dc, type: 3}
+  - GameEventDispatcherTemplate: {fileID: 4900000, guid: a8ad67c6e0d44242a659b4496d130385, type: 3}
+  - GameEvenTypeEnumTemplate: {fileID: 4900000, guid: 08d5f5791e1c430ba62b1d0df44edfb5, type: 3}
+  - GameEventTriggerTemplate: {fileID: 4900000, guid: 4d76f73f3d974d538ee841a4a2b37c1b, type: 3}
+  - VisualScriptEventUnitTemplate: {fileID: 4900000, guid: 163d695e21494b4a81fe4f4f29a0c06d, type: 3}
+  - GameAddListenerTemplate: {fileID: 4900000, guid: cc759b682ddf44d98e4ee0803a2a9d6e, type: 3}
+  - GameRemoveListenerTemplate: {fileID: 4900000, guid: 667233cc96264715bbae8ad5f0a0d461, type: 3}
+  - GameEventListenerMethodTemplate: {fileID: 4900000, guid: f663960a7c7843e4b2a8f6cca8b4c86e, type: 3}
+  - ScriptGraphContainerTemplate: {fileID: 4900000, guid: d9408adb06fe4608b28a63bd10064c25, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

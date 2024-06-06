@@ -1,0 +1,8 @@
+﻿namespace Platinio.GameEventGenerator
+{{
+    //{{0}} enum values
+    public enum GameEventType
+    {{
+        {0}
+    }}
+}}

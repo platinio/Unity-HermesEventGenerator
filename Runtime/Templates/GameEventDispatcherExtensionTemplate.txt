@@ -1,0 +1,61 @@
+﻿{5}
+
+namespace Platinio.GameEventGenerator
+{{
+    //{{0}} Game event name example: OnGameEntityDamage
+    //{{1}} event args signature example: GameEntity Target, float Damage
+    //{{2}} event args declaration example: public readonly GameEntity Target; \n 
+    //{{3}} event args name signature example: target, value
+    //{{4}} event args assignment  example: Target = target;
+    //{{5}} namespaces example: using System;
+    public partial class GameEventDispatcher
+    {{
+        public {0}Event {0}GameEvent;
+
+        public class {0}Event
+        {{
+            private event Action<{0}EventArgs> {0};
+            private GameEventDispatcher Dispatcher;
+
+            public {0}Event(GameEventDispatcher dispatcher)
+            {{
+                Dispatcher = dispatcher;
+            }}
+
+            public void Raise({1})
+            {{
+               var args = new {0}EventArgs({3});
+                               
+               {0}?.Invoke(args);
+               Dispatcher.OnGameEventRaised("{0}GameEvent", args);
+            }}
+            
+             public void Raise({0}EventArgs eventArgs)
+             {{                                   
+                 {0}?.Invoke(eventArgs);
+                 Dispatcher.OnGameEventRaised("{0}GameEvent", eventArgs);
+             }}
+
+            public void AddListener(Action<{0}EventArgs> listener)
+            {{
+                {0} += listener;
+            }}
+            
+             public void RemoveListener(Action<{0}EventArgs> listener)
+             {{
+                {0} -= listener;
+             }}
+        }}
+    }}
+    
+    [System.Serializable]
+    public class {0}EventArgs : GameEventArgsBase
+    {{        
+        {2}
+
+        public {0}EventArgs({1})
+        {{
+            {4}
+        }}
+    }}
+}}

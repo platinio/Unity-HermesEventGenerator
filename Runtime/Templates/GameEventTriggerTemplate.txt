@@ -1,0 +1,17 @@
+﻿{3}
+
+namespace Platinio.GameEventGenerator
+{{
+    public class {0}GameEventTrigger : EventTriggerBase
+    {{
+        {1}
+    
+        public override void Trigger()
+        {{
+            var gameEventDispatcher = GetComponent<GameEventDispatcher>();
+            if (gameEventDispatcher == null) return;
+            
+            gameEventDispatcher.{0}GameEvent.Raise({2});
+        }}
+    }}
+}}

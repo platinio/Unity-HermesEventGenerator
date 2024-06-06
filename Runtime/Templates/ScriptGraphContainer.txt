@@ -1,0 +1,34 @@
+﻿using Platinio.SDK.DependencyInjection;
+using Unity.VisualScripting;
+
+namespace Platinio.GameEventGenerator
+{{
+    public partial class ScriptGraphContainer
+    {{        
+        private void Start()
+        {{
+            RegisterListeners();
+        }}
+        
+        private void OnDestroy()
+        {{
+            UnregisterListeners();
+        }}
+        
+        private void RegisterListeners()
+        {{
+            var sceneGameEvents = ServicesContainer.Resolve<ISceneGameEvents>();
+            {0}            
+        }}        
+       
+        
+        private void UnregisterListeners()
+        {{
+            var sceneGameEvents = ServicesContainer.Resolve<ISceneGameEvents>();
+            {1}           
+        }}
+        
+        {2}
+    }}
+}}
+

@@ -1,0 +1,13 @@
+﻿namespace Platinio.GameEventGenerator
+{{
+    // {{0}} game event initialization example: OnGameEntityDamage = new OnGameEntityDamageEvent(this);
+
+    public partial class GameEventDispatcher
+    {{       
+        private void Awake()
+        {{
+            {0}
+        }}
+
+    }}  
+}}
