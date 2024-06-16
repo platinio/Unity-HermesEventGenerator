@@ -24,7 +24,7 @@ namespace Platinio.GameEventGenerator.Editor
         private readonly string GenerateFolderPath = $"{Path.GetDirectoryName(Application.dataPath)}\\Assets\\Platinio.GameEvents.Generated";
         
         [MenuItem("Window/RPG Editors/GameEvent Definition Editor Window")]
-        public static void OpenSkillEditor()
+        public static void OpenEditor()
         {
             GameEventDefinitionEditorWindow wnd = GetWindow<GameEventDefinitionEditorWindow>();
             wnd.titleContent = new GUIContent(wnd.GetWindowTitle());
