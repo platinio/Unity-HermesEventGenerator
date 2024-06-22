@@ -9,18 +9,13 @@ namespace Platinio.GameEventGenerator
         [SerializeField] private ScriptMachine scriptMachinePrefab;
         
         private Dictionary<int, ScriptMachine> scripthMahcineDict = new();
-        private Transform scriptMachineParent;
         private int scriptMachineCount = 0;
 
-        private void Awake()
-        {
-            scriptMachineParent = new GameObject("ScriptMachines").transform;
-            scriptMachineParent.parent = transform;
-        }
-        
+        public Variables OwnerVariables { get; set; }
+
         public int AddScriptGraph(ScriptGraphAsset scriptGraphAsset)
         {
-            var scriptMachine = Instantiate(scriptMachinePrefab, scriptMachineParent);
+            var scriptMachine = Instantiate(scriptMachinePrefab, transform);
             scriptMachine.nest.SwitchToEmbed(scriptGraphAsset.graph);
 
             scriptMachineCount++;
@@ -41,6 +36,16 @@ namespace Platinio.GameEventGenerator
                     scripthMahcineDict.Remove(scriptMachineKeyValuePair.Key);
                 }
             }
+        }
+
+        public object GetOwnerVariable(string variableName)
+        {
+            return OwnerVariables.declarations.Get(variableName);
+        }
+
+        public void SetOwnerVariable(string variableName, object value)
+        {
+            OwnerVariables.declarations.Set(variableName, value);
         }
 
         public void RemoveScriptMachine(int scriptMachineId)
