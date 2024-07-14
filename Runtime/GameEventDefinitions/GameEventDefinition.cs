@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Platinio.ScriptableObjectDatabase;
+using ArcaneOnyx.ScriptableObjectDatabase;
 using UnityEngine;
 
 namespace Platinio.GameEventGenerator

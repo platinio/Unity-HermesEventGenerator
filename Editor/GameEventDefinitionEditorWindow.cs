@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using Platinio.ScriptableObjectDatabase;
+using ArcaneOnyx.ScriptableObjectDatabase;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -36,10 +36,10 @@ namespace Platinio.GameEventGenerator.Editor
 
         protected override void SetupToolBar(ToolbarMenu toolbarMenu)
         {
-            toolbarMenu.menu.AppendAction("Create New Event", CreateNewEntry);
+            AddCreateItemOptions(toolbarMenu);
             toolbarMenu.menu.AppendAction("Regenerate Events", RegenerateEvents);
-            toolbarMenu.menu.AppendAction("Duplicate Selected Event", DuplicateEntry);
-            toolbarMenu.menu.AppendAction("Remove Selected Event", RemoveEntry);
+            toolbarMenu.menu.AppendAction("Duplicate Selected Item", DuplicateEntry);
+            toolbarMenu.menu.AppendAction("Remove Selected Item", RemoveEntry);
             toolbarMenu.menu.AppendAction("Move Up", (_) => MoveSelectedItem(-1));
             toolbarMenu.menu.AppendAction("Move Down", (_) => MoveSelectedItem(1));
             toolbarMenu.menu.AppendAction("Save", Save);
