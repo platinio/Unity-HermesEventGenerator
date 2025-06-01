@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Platinio.GameEventGenerator
+namespace ArcaneOnyx.GameEventGenerator
 {
     public abstract class EventTriggerBase : MonoBehaviour 
     {

@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: daeb9e6aff6a4655b254ce95e10b6792, type: 3}
+  m_Name: GameEventDefinitionDatabase
+  m_EditorClassIdentifier: 
+  items:
+  - {fileID: 7313367655612229962}
+  isEnabled: 1
+  id: 30
+--- !u!114 &7313367655612229962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1a46adf4cb9e314aad7035f65526a82, type: 3}
+  m_Name: OnDoDamage
+  m_EditorClassIdentifier: 
+  Name: OnDoDamage
+  icon: {fileID: 0}
+  id: 29
+  description: 
+  args:
+  - variableType: Player
+    variableName: from
+  - variableType: Player
+    variableName: to
+  - variableType: int
+    variableName: damage
+  namespaces:
+  - ArcaneOnyx.GameEventGenerator.Samples

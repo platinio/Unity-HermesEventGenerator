@@ -1,6 +1,6 @@
 ﻿{5}
 
-namespace Platinio.GameEventGenerator
+namespace ArcaneOnyx.GameEventGenerator
 {{
     //{{0}} Game event name example: OnGameEntityDamage
     //{{1}} event args signature example: GameEntity Target, float Damage

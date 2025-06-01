@@ -1,7 +1,7 @@
 ﻿using ArcaneOnyx.ScriptableObjectDatabase;
 using UnityEngine;
 
-namespace Platinio.GameEventGenerator
+namespace ArcaneOnyx.GameEventGenerator
 {
     [CreateAssetMenu(menuName = "Database/Game Event Definiton")]
     public class GameEventDefinitionDatabase : ScriptableDatabase<GameEventDefinition> { }

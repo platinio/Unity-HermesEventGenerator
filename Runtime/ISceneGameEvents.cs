@@ -1,4 +1,4 @@
-﻿namespace Platinio.GameEventGenerator
+﻿namespace ArcaneOnyx.GameEventGenerator
 {
     public interface ISceneGameEvents
     {

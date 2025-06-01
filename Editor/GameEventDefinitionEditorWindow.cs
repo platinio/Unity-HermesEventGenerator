@@ -6,7 +6,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Platinio.GameEventGenerator.Editor
+namespace ArcaneOnyx.GameEventGenerator
 {
     public class GameEventDefinitionEditorWindow : DatabaseEditorWindow<GameEventDefinitionDatabase, GameEventDefinition>
     {
@@ -21,9 +21,9 @@ namespace Platinio.GameEventGenerator.Editor
         public TextAsset ScriptGraphContainerTemplate;
      
 
-        private readonly string GenerateFolderPath = $"{Path.GetDirectoryName(Application.dataPath)}\\Assets\\Platinio.GameEvents.Generated";
+        private readonly string GenerateFolderPath = $"{Path.GetDirectoryName(Application.dataPath)}\\Assets\\ArcaneOnyx.GameEvents.Generated";
         
-        [MenuItem("Window/RPG Editors/GameEvent Definition Editor Window")]
+        [MenuItem("Window/General/GameEvent Definition Editor Window")]
         public static void OpenEditor()
         {
             GameEventDefinitionEditorWindow wnd = GetWindow<GameEventDefinitionEditorWindow>();

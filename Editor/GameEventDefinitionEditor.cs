@@ -2,7 +2,7 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace Platinio.GameEventGenerator
+namespace ArcaneOnyx.GameEventGenerator
 {
     [CustomEditor(typeof(GameEventDefinition))]
     public class GameEventDefinitionEditor : UnityEditor.Editor
@@ -18,7 +18,7 @@ namespace Platinio.GameEventGenerator
             if (sceneGameEvents == null) return;
 
             var gameEventDefinition = target as GameEventDefinition;
-            var eventTriggerType = Type.GetType($"Platinio.GameEvents.{gameEventDefinition.name}GameEventTrigger, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+            var eventTriggerType = Type.GetType($"ArcaneOnyx.GameEventGenerator.{gameEventDefinition.name}GameEventTrigger, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
           
             dynamic eventTrigger = sceneGameEvents.gameObject.GetComponent(eventTriggerType);
            

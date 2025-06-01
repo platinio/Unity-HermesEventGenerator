@@ -1,6 +1,6 @@
 ﻿{3}
 
-namespace Platinio.GameEventGenerator
+namespace ArcaneOnyx.GameEventGenerator
 {{
     public class {0}GameEventTrigger : EventTriggerBase
     {{

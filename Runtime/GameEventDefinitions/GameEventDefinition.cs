@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using ArcaneOnyx.ScriptableObjectDatabase;
 using UnityEngine;
 
-namespace Platinio.GameEventGenerator
+namespace ArcaneOnyx.GameEventGenerator
 {
     public class GameEventDefinition : ScriptableItem
     {
@@ -91,7 +91,7 @@ namespace Platinio.GameEventGenerator
                 string localVariableName = variableDefinition.VariableName;
                 localVariableName = $"{char.ToLower(localVariableName[0])}{localVariableName.Substring(1)}";
                 
-                eventArgsAssignment += $"{variableDefinition.VariableName} = {localVariableName};\n";
+                eventArgsAssignment += $"this.{variableDefinition.VariableName} = {localVariableName};\n";
             }
           
             return eventArgsAssignment;

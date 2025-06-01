@@ -1,4 +1,4 @@
-﻿namespace Platinio.GameEventGenerator
+﻿namespace ArcaneOnyx.GameEventGenerator
 {{
     // {{0}} game event initialization example: OnGameEntityDamage = new OnGameEntityDamageEvent(this);
 

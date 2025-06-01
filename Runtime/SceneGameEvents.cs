@@ -1,7 +1,7 @@
-﻿using Platinio.SDK.DependencyInjection;
+﻿using ArcaneOnyx.ServiceLocator;
 using UnityEngine;
 
-namespace Platinio.GameEventGenerator
+namespace ArcaneOnyx.GameEventGenerator
 {
     public class SceneGameEvents : MonoBehaviour, ISceneGameEvents
     {

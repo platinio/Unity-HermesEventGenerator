@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Platinio.GameEventGenerator
+namespace ArcaneOnyx.GameEventGenerator
 {
     public partial class GameEventDispatcher : MonoBehaviour
     {
