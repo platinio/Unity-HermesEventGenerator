@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 namespace ArcaneOnyx.GameEventGenerator.Samples
 {
+    [DefaultExecutionOrder(int.MaxValue)]
     public class HPBar : MonoBehaviour
     {
         [SerializeField] private Player owner;
