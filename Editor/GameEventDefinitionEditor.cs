@@ -10,23 +10,20 @@ namespace ArcaneOnyx.GameEventGenerator
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
-          
             if (!EditorApplication.isPlaying) return;
-            if (Selection.activeGameObject == null) return;
 
-            var sceneGameEvents = FindObjectOfType<SceneGameEvents>();
-            if (sceneGameEvents == null) return;
-
+            var dispatcher = GetActiveDispatcher();
+            
             var gameEventDefinition = target as GameEventDefinition;
             var eventTriggerType = Type.GetType($"ArcaneOnyx.GameEventGenerator.{gameEventDefinition.name}GameEventTrigger, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
           
-            dynamic eventTrigger = sceneGameEvents.gameObject.GetComponent(eventTriggerType);
+            dynamic eventTrigger = dispatcher.gameObject.GetComponent(eventTriggerType);
            
             if (eventTrigger == null)
             {
                 if (GUILayout.Button("Add Event Trigger Component"))
                 {
-                    sceneGameEvents.gameObject.AddComponent(eventTriggerType);
+                    dispatcher.gameObject.AddComponent(eventTriggerType);
                 }
                 
                 return;
@@ -58,6 +55,20 @@ namespace ArcaneOnyx.GameEventGenerator
             }
             
             EditorGUILayout.EndVertical();
+        }
+
+        private GameEventDispatcher GetActiveDispatcher()
+        {
+            if (Selection.activeGameObject != null)
+            {
+                var dispatcher = Selection.activeGameObject.GetComponent<GameEventDispatcher>();
+                if (dispatcher != null) return dispatcher;
+            }
+
+            var sceneGameEvents = FindObjectOfType<SceneGameEvents>();
+            if (sceneGameEvents == null) return null;
+                
+            return sceneGameEvents.GetComponent<GameEventDispatcher>();
         }
     }
 }
