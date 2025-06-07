@@ -22,7 +22,7 @@ namespace ArcaneOnyx.GameEventGenerator.Samples
         private void OnDoDamage(OnDoDamageEventArgs args)
         {
             var log = Instantiate(logPrefab, transform);
-            log.Create(args.from, args.to, args.damage);
+            log.Create(args.from as Player, args.to as Player, args.damage);
             log.transform.SetSiblingIndex(0);
         }
     }

@@ -15,7 +15,16 @@ namespace ArcaneOnyx.GameEventGenerator
             var dispatcher = GetActiveDispatcher();
             
             var gameEventDefinition = target as GameEventDefinition;
-            var eventTriggerType = Type.GetType($"ArcaneOnyx.GameEventGenerator.{gameEventDefinition.name}GameEventTrigger, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+
+            Type t = typeof(OnDoDamageGameEventTrigger);
+            Debug.Log($"{t.AssemblyQualifiedName}");
+            
+            //var eventTriggerType = Type.GetType($"ArcaneOnyx.GameEventGenerator.{gameEventDefinition.name}GameEventTrigger, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+            string assemblyQualifiedName = $"ArcaneOnyx.GameEventGenerator.{gameEventDefinition.name}GameEventTrigger, Hermes.Events, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null";
+            
+            Debug.Log($"{assemblyQualifiedName}");
+            
+            var eventTriggerType = Type.GetType(assemblyQualifiedName);
           
             dynamic eventTrigger = dispatcher.gameObject.GetComponent(eventTriggerType);
            

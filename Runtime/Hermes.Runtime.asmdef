@@ -1,0 +1,21 @@
+{
+    "name": "Hermes.Runtime",
+    "rootNamespace": "",
+    "references": [
+        "GUID:3dc5b907e34a24044b423a3f22ebfa4a",
+        "GUID:567d48d7db85dfb4aaf5772ded52202a",
+        "GUID:21b0c8d1703a94250bfac916590cea4f",
+        "GUID:4ffb04911ec55de4e9b0e690edc6cb87",
+        "GUID:ea715009a4efd4c6cbc85be3ae097dd3",
+        "GUID:50a6038dc090d114a89aa67eaebbd15b"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
