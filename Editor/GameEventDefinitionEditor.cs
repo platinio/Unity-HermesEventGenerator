@@ -16,9 +16,7 @@ namespace ArcaneOnyx.GameEventGenerator
             
             var gameEventDefinition = target as GameEventDefinition;
 
-            Type t = typeof(OnDoDamageGameEventTrigger);
-            Debug.Log($"{t.AssemblyQualifiedName}");
-            
+           
             //var eventTriggerType = Type.GetType($"ArcaneOnyx.GameEventGenerator.{gameEventDefinition.name}GameEventTrigger, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
             string assemblyQualifiedName = $"ArcaneOnyx.GameEventGenerator.{gameEventDefinition.name}GameEventTrigger, Hermes.Events, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null";
             

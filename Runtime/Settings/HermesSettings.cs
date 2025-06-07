@@ -11,6 +11,10 @@ namespace ArcaneOnyx.GameEventGenerator
         [SerializeField] private string argumentsModulePath = "Assets/Hermes.Generated/Arguments";
         [SerializeField] private string eventsModulePath = "Assets/Hermes.Generated/Events";
         [SerializeField] private bool useAssemblyDefinitions = false;
+
+        public string ArgumentsModulePath => argumentsModulePath;
+        public string EventsModulePath => eventsModulePath;
+        public bool UseAssemblyDefinitions => useAssemblyDefinitions;
         
         #if UNITY_EDITOR
         public static HermesSettings GetOrCreateSettings()

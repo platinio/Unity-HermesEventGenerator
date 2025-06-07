@@ -1,13 +1,11 @@
-﻿{5}
+﻿{3}
 
 namespace ArcaneOnyx.GameEventGenerator
 {{
     //{{0}} Game event name example: OnGameEntityDamage
-    //{{1}} event args signature example: GameEntity Target, float Damage
-    //{{2}} event args declaration example: public readonly GameEntity Target; \n 
-    //{{3}} event args name signature example: target, value
-    //{{4}} event args assignment  example: Target = target;
-    //{{5}} namespaces example: using System;
+    //{{1}} event args signature example: GameEntity Target, float Damage   
+    //{{2}} event args name signature example: target, value   
+    //{{3}} namespaces example: using System;
     public partial class GameEventDispatcher
     {{
         public {0}Event {0}GameEvent;
@@ -24,7 +22,7 @@ namespace ArcaneOnyx.GameEventGenerator
 
             public void Raise({1})
             {{
-               var args = new {0}EventArgs({3});
+               var args = new {0}EventArgs({2});
                                
                {0}?.Invoke(args);
                Dispatcher.OnGameEventRaised("{0}GameEvent", args);
@@ -45,17 +43,6 @@ namespace ArcaneOnyx.GameEventGenerator
              {{
                 {0} -= listener;
              }}
-        }}
-    }}
-    
-    [System.Serializable]
-    public class {0}EventArgs : GameEventArgsBase
-    {{        
-        {2}
-
-        public {0}EventArgs({1})
-        {{
-            {4}
         }}
     }}
 }}

@@ -1,0 +1,21 @@
+﻿//{{0}} Game event name example: OnGameEntityDamage
+//{{1}} event args signature example: GameEntity Target, float Damage
+//{{2}} event args declaration example: public readonly GameEntity Target;
+//{{3}} event args assignment  example: Target = target;
+//{{4}} namespaces example: using System;
+
+{4}
+
+namespace ArcaneOnyx.GameEventGenerator
+{
+    [System.Serializable]
+        public class {0}EventArgs : GameEventArgsBase
+        {{        
+            {2}
+    
+            public {0}EventArgs({1})
+            {{
+                {3}
+            }}
+        }}
+}

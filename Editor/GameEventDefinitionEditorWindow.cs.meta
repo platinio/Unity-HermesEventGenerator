@@ -8,6 +8,7 @@ MonoImporter:
   - visualTreeAsset: {fileID: 9197481963319205126, guid: 38948951abf44a847b928c9e0a0a1371, type: 3}
   - listElementTreeAsset: {fileID: 9197481963319205126, guid: 0d4e6bda20cc12f49a9fa303e75e4292, type: 3}
   - GameEventDispatcherExtensionTemplate: {fileID: 4900000, guid: 1a198261874a4e0fa52d0adc6adab3dc, type: 3}
+  - GameEventArgsTemplate: {fileID: 4900000, guid: 15e6b02c7147403b88b317e08ad7aa53, type: 3}
   - GameEventDispatcherTemplate: {fileID: 4900000, guid: a8ad67c6e0d44242a659b4496d130385, type: 3}
   - GameEvenTypeEnumTemplate: {fileID: 4900000, guid: 08d5f5791e1c430ba62b1d0df44edfb5, type: 3}
   - GameEventTriggerTemplate: {fileID: 4900000, guid: 4d76f73f3d974d538ee841a4a2b37c1b, type: 3}
@@ -16,6 +17,11 @@ MonoImporter:
   - GameRemoveListenerTemplate: {fileID: 4900000, guid: 667233cc96264715bbae8ad5f0a0d461, type: 3}
   - GameEventListenerMethodTemplate: {fileID: 4900000, guid: f663960a7c7843e4b2a8f6cca8b4c86e, type: 3}
   - ScriptGraphContainerTemplate: {fileID: 4900000, guid: d9408adb06fe4608b28a63bd10064c25, type: 3}
+  - GameEventArgsBase: {fileID: 11500000, guid: f8153c2d6cf94a4e880f6532d9305348, type: 3}
+  - EventTriggerBase: {fileID: 11500000, guid: 6a4cf8206d504d9391e084822840857f, type: 3}
+  - GameEventDispatcher: {fileID: 11500000, guid: 1f3f51dd381044049ef62fef3c20ba69, type: 3}
+  - ISceneGameEvents: {fileID: 11500000, guid: e6ce651f46214b8a994f45485f7fd918, type: 3}
+  - ScriptGraphContainer: {fileID: 11500000, guid: 3d413ceb8c4dd0d45af7153bd1087994, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

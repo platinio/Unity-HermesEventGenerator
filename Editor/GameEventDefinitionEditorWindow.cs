@@ -3,6 +3,7 @@ using System.IO;
 using ArcaneOnyx.ScriptableObjectDatabase;
 using UnityEditor;
 using UnityEditor.UIElements;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -11,6 +12,7 @@ namespace ArcaneOnyx.GameEventGenerator
     public class GameEventDefinitionEditorWindow : DatabaseEditorWindow<GameEventDefinitionDatabase, GameEventDefinition>
     {
         public TextAsset GameEventDispatcherExtensionTemplate;
+        public TextAsset GameEventArgsTemplate;
         public TextAsset GameEventDispatcherTemplate;
         public TextAsset GameEvenTypeEnumTemplate;
         public TextAsset GameEventTriggerTemplate;
@@ -19,9 +21,32 @@ namespace ArcaneOnyx.GameEventGenerator
         public TextAsset GameRemoveListenerTemplate;
         public TextAsset GameEventListenerMethodTemplate;
         public TextAsset ScriptGraphContainerTemplate;
-     
 
-        private readonly string GenerateFolderPath = $"{Path.GetDirectoryName(Application.dataPath)}\\Assets\\ArcaneOnyx.GameEvents.Generated";
+        //event args dependencies
+        public TextAsset GameEventArgsBase;
+
+        public List<TextAsset> EventArgsDependencies => new()
+        {
+            GameEventArgsBase
+        };
+
+        //events dependencies
+        public TextAsset EventTriggerBase;
+        public TextAsset GameEventDispatcher;
+        public TextAsset ISceneGameEvents;
+        public TextAsset ScriptGraphContainer;
+        
+        public List<TextAsset> EventDependencies => new()
+        {
+            EventTriggerBase,
+            GameEventDispatcher,
+            ISceneGameEvents,
+            ScriptGraphContainer
+        };
+
+        public AssemblyDefinitionAsset AssemblyDefinitionTemplate;
+       
+        private readonly string BaseGenerationPath = $"{Path.GetDirectoryName(Application.dataPath)}";
         
         [MenuItem("Window/General/GameEvent Definition Editor Window")]
         public static void OpenEditor()
@@ -52,19 +77,28 @@ namespace ArcaneOnyx.GameEventGenerator
                 Debug.LogError("Can't regenerate events while playing");
                 return;
             }
+            
+            var hermesSettings = HermesSettings.GetOrCreateSettings();
 
-            if (Directory.Exists(GenerateFolderPath))
+            if (Directory.Exists($"{BaseGenerationPath}\\{hermesSettings.ArgumentsModulePath}"))
             {
-                Directory.Delete(GenerateFolderPath, true);
+                Directory.Delete($"{BaseGenerationPath}\\{hermesSettings.ArgumentsModulePath}", true);
             }
             
-            Directory.CreateDirectory(GenerateFolderPath);
+            if (Directory.Exists($"{BaseGenerationPath}\\{hermesSettings.EventsModulePath}"))
+            {
+                Directory.Delete($"{BaseGenerationPath}\\{hermesSettings.EventsModulePath}", true);
+            }
+            
+            Directory.CreateDirectory($"{BaseGenerationPath}\\{hermesSettings.ArgumentsModulePath}");
+            Directory.CreateDirectory($"{BaseGenerationPath}\\{hermesSettings.EventsModulePath}");
             
             var gameEventDefinitions = GetFilteredEntries();
 
             foreach (var gameEventDefinition in gameEventDefinitions)
             {
                 CreateDispatcherExtension(gameEventDefinition);
+                CreateEventArgs(gameEventDefinition);
                 CreateEventTrigger(gameEventDefinition);
                 CreateVisualScriptEventUnit(gameEventDefinition);
             }
@@ -72,6 +106,15 @@ namespace ArcaneOnyx.GameEventGenerator
             CreateDispatcher(gameEventDefinitions);
             CreateGameEventEnum(gameEventDefinitions);
             CreateVisualScriptingEventListener(gameEventDefinitions);
+            
+            MoveOrCreateEventScripts();
+            MoveOrCreateEventArgsScripts();
+
+            if (hermesSettings.UseAssemblyDefinitions)
+            {
+                AssetDatabase.CreateAsset(AssemblyDefinitionTemplate, $"{hermesSettings.EventsModulePath}/Hermes.Events.asmdef");
+                AssetDatabase.CreateAsset(AssemblyDefinitionTemplate, $"{hermesSettings.ArgumentsModulePath}/Hermes.EventArgs.asmdef");
+            }
             
             AssetDatabase.Refresh();
         }
@@ -82,8 +125,8 @@ namespace ArcaneOnyx.GameEventGenerator
 
             string scriptTemplate = VisualScriptEventUnitTemplate.text;
             string script = string.Format(scriptTemplate, eventName);
-
-            string path = $"{GenerateFolderPath}\\{gameEventDefinition.name}GameEventUnit.cs";
+          
+            string path = $"{BaseGenerationPath}\\{HermesSettings.GetOrCreateSettings().EventsModulePath}\\{gameEventDefinition.name}GameEventUnit.cs";
             File.WriteAllText(path, script);
         }
 
@@ -91,18 +134,31 @@ namespace ArcaneOnyx.GameEventGenerator
         {
             string eventName = gameEventDefinition.name;
             string eventArgsSignature = gameEventDefinition.GetArgsSignature();
-            string eventArgsDeclaration = gameEventDefinition.GetArgsDeclaration();
             string eventArgsNameSignature = gameEventDefinition.GetArgsNameSignature();
-            string eventArgsAssignment  = gameEventDefinition.GetArgsAssignment();
             string namespaces  = gameEventDefinition.GetNamespaces();
 
             string scriptTemplate = GameEventDispatcherExtensionTemplate.text;
-            string script = string.Format(scriptTemplate, eventName, eventArgsSignature, eventArgsDeclaration, eventArgsNameSignature, eventArgsAssignment, namespaces);
+            string script = string.Format(scriptTemplate, eventName, eventArgsSignature, eventArgsNameSignature, namespaces);
 
-            string path = $"{GenerateFolderPath}\\GameEventDispatcher.{gameEventDefinition.name}.cs";
+            string path = $"{BaseGenerationPath}\\{HermesSettings.GetOrCreateSettings().EventsModulePath}\\GameEventDispatcher.{gameEventDefinition.name}.cs";
             File.WriteAllText(path, script);
         }
-        
+
+        private void CreateEventArgs(GameEventDefinition gameEventDefinition)
+        {
+            string eventName = gameEventDefinition.name;
+            string eventArgsSignature = gameEventDefinition.GetArgsSignature();
+            string eventArgsDeclaration = gameEventDefinition.GetArgsDeclaration();
+            string eventArgsAssignment  = gameEventDefinition.GetArgsAssignment();
+            string namespaces  = gameEventDefinition.GetNamespaces();
+
+            string scriptTemplate = GameEventArgsTemplate.text;
+            string script = string.Format(scriptTemplate, eventName, eventArgsSignature, eventArgsDeclaration, eventArgsAssignment, namespaces);
+           
+            string path = $"{BaseGenerationPath}\\{HermesSettings.GetOrCreateSettings().ArgumentsModulePath}\\{gameEventDefinition.name}EventArgs.cs";
+            File.WriteAllText(path, script);
+        }
+
         private void CreateEventTrigger(GameEventDefinition gameEventDefinition)
         {
             string eventName = gameEventDefinition.name;
@@ -116,7 +172,7 @@ namespace ArcaneOnyx.GameEventGenerator
             string scriptTemplate = GameEventTriggerTemplate.text;
             string script = string.Format(scriptTemplate, eventName, argsDeclaration, eventArgsNameSignature, namespaces);
 
-            string path = $"{GenerateFolderPath}\\{gameEventDefinition.name}GameEventTrigger.cs";
+            string path = $"{BaseGenerationPath}\\{HermesSettings.GetOrCreateSettings().EventsModulePath}\\{gameEventDefinition.name}GameEventTrigger.cs";
             File.WriteAllText(path, script);
         }
 
@@ -131,9 +187,9 @@ namespace ArcaneOnyx.GameEventGenerator
             }
 
             string script = string.Format(scriptTemplate, awakeInitialization);
-            string fullPath = $"{GenerateFolderPath}\\GameEventDispatcherExtension.cs";
+            string path = $"{BaseGenerationPath}\\{HermesSettings.GetOrCreateSettings().EventsModulePath}\\GameEventDispatcherExtension.cs";
           
-            File.WriteAllText( fullPath, script );
+            File.WriteAllText( path, script );
         }
         
         private void CreateGameEventEnum(IReadOnlyList<GameEventDefinition> gameEventDefinitions)
@@ -147,9 +203,9 @@ namespace ArcaneOnyx.GameEventGenerator
             }
 
             string script = string.Format(scriptTemplate, enumValues);
-            string fullPath = $"{GenerateFolderPath}\\GameEventTypeEnum.cs";
+            string path = $"{BaseGenerationPath}\\{HermesSettings.GetOrCreateSettings().EventsModulePath}\\GameEventTypeEnum.cs";
           
-            File.WriteAllText( fullPath, script );
+            File.WriteAllText(path, script);
         }
 
         private void CreateVisualScriptingEventListener(IReadOnlyList<GameEventDefinition> gameEventDefinitions)
@@ -186,11 +242,27 @@ namespace ArcaneOnyx.GameEventGenerator
 
             string scriptGraphContainer = ScriptGraphContainerTemplate.text;
             scriptGraphContainer = string.Format(scriptGraphContainer, addListeners, removeListeners, listenerMethods);
-            
-            string fullPath = $"{GenerateFolderPath}\\ScriptGraphContainer.GameEvents.cs";
-          
-            File.WriteAllText( fullPath, scriptGraphContainer );
-            
+           
+            string path = $"{BaseGenerationPath}\\{HermesSettings.GetOrCreateSettings().EventsModulePath}\\ScriptGraphContainer.GameEvents.cs";
+            File.WriteAllText(path, scriptGraphContainer);
+        }
+
+        private void MoveOrCreateEventArgsScripts()
+        {
+            foreach (var script in EventArgsDependencies)
+            {
+                string path = AssetDatabase.GetAssetPath(script);
+                AssetDatabase.MoveAsset(path, HermesSettings.GetOrCreateSettings().ArgumentsModulePath);
+            }
+        }
+        
+        private void MoveOrCreateEventScripts()
+        {
+            foreach (var script in EventDependencies)
+            {
+                string path = AssetDatabase.GetAssetPath(script);
+                AssetDatabase.MoveAsset(path, HermesSettings.GetOrCreateSettings().EventsModulePath);
+            }
         }
     }
 }

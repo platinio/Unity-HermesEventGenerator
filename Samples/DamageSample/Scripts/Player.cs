@@ -15,15 +15,15 @@ namespace ArcaneOnyx.GameEventGenerator.Samples
             MaxHP = HP;
             
             var sceneGameEvents = ServicesContainer.Resolve<ISceneGameEvents>();
-            sceneGameEvents?.GameEventDispatcher.OnDoDamageGameEvent.AddListener(OnDoDamage);
+            //sceneGameEvents?.GameEventDispatcher.OnDoDamageGameEvent.AddListener(OnDoDamage);
         }
 
         private void OnDestroy()
         {
             var sceneGameEvents = ServicesContainer.Resolve<ISceneGameEvents>();
-            sceneGameEvents?.GameEventDispatcher.OnDoDamageGameEvent.RemoveListener(OnDoDamage);
+            //sceneGameEvents?.GameEventDispatcher.OnDoDamageGameEvent.RemoveListener(OnDoDamage);
         }
-
+        /*
         public void OnDoDamage(OnDoDamageEventArgs args)
         {
             //if this damage event is not for me ignore
@@ -35,7 +35,7 @@ namespace ArcaneOnyx.GameEventGenerator.Samples
                 HP = 0;
                 Destroy(gameObject);
             }
-        }
+        }*/
     }
 }
 
