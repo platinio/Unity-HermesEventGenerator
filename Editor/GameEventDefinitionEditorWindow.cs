@@ -7,7 +7,6 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEditorInternal;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
 namespace ArcaneOnyx.GameEventGenerator
@@ -81,21 +80,9 @@ namespace ArcaneOnyx.GameEventGenerator
                 Debug.LogError("Can't regenerate events while playing");
                 return;
             }
-            
-            var hermesSettings = HermesSettings.GetOrCreateSettings();
-
-            if (Directory.Exists($"{BaseGenerationPath}\\{hermesSettings.ArgumentsModulePath}"))
-            {
-                Directory.Delete($"{BaseGenerationPath}\\{hermesSettings.ArgumentsModulePath}", true);
-            }
-            
-            if (Directory.Exists($"{BaseGenerationPath}\\{hermesSettings.EventsModulePath}"))
-            {
-                Directory.Delete($"{BaseGenerationPath}\\{hermesSettings.EventsModulePath}", true);
-            }
-            
-            Directory.CreateDirectory($"{BaseGenerationPath}\\{hermesSettings.ArgumentsModulePath}");
-            Directory.CreateDirectory($"{BaseGenerationPath}\\{hermesSettings.EventsModulePath}");
+           
+            DeleteEventGenerationCode();
+            CreateEmptyFolders();
             
             var gameEventDefinitions = GetFilteredEntries();
 
@@ -113,27 +100,32 @@ namespace ArcaneOnyx.GameEventGenerator
             
             MoveEventScripts();
             MoveEventArgsScripts();
-
-            if (hermesSettings.UseAssemblyDefinitions)
-            {
-                string eventPath = $"{hermesSettings.EventsModulePath}/Hermes.Events.asmdef".Replace("/", "\\");
-                using (FileStream fs = File.Create(eventPath))
-                {
-                    string assemblyContent = EventsAssemblyDefinitionTemplate.text.Replace("Hermes.Events.Template", "Hermes.Events");
-                    Byte[] content = new UTF8Encoding(true).GetBytes(assemblyContent);
-                    fs.Write(content, 0, assemblyContent.Length);
-                }
-
-                string eventArgsPath = $"{hermesSettings.ArgumentsModulePath}/Hermes.EventArgs.asmdef".Replace("/", "\\");
-                using (FileStream fs = File.Create(eventArgsPath))
-                {
-                    string assemblyContent = EventArgsAssemblyDefinitionTemplate.text.Replace("Hermes.EventArgs.Template", "Hermes.EventArgs");
-                    Byte[] content = new UTF8Encoding(true).GetBytes(assemblyContent);
-                    fs.Write(content, 0, assemblyContent.Length);
-                }
-            }
+            RegenrateAssemblyDefinitions();
             
             AssetDatabase.Refresh();
+        }
+
+        private void DeleteEventGenerationCode()
+        {
+            var hermesSettings = HermesSettings.GetOrCreateSettings();
+
+            if (Directory.Exists($"{BaseGenerationPath}\\{hermesSettings.ArgumentsModulePath}"))
+            {
+                Directory.Delete($"{BaseGenerationPath}\\{hermesSettings.ArgumentsModulePath}", true);
+            }
+            
+            if (Directory.Exists($"{BaseGenerationPath}\\{hermesSettings.EventsModulePath}"))
+            {
+                Directory.Delete($"{BaseGenerationPath}\\{hermesSettings.EventsModulePath}", true);
+            }
+        }
+
+        private void CreateEmptyFolders()
+        {
+            var hermesSettings = HermesSettings.GetOrCreateSettings();
+            
+            Directory.CreateDirectory($"{BaseGenerationPath}\\{hermesSettings.ArgumentsModulePath}");
+            Directory.CreateDirectory($"{BaseGenerationPath}\\{hermesSettings.EventsModulePath}");
         }
 
         private void CreateVisualScriptEventUnit(GameEventDefinition gameEventDefinition)
@@ -330,6 +322,30 @@ namespace ArcaneOnyx.GameEventGenerator
 
                 string currentPath = AssetDatabase.GetAssetPath(script).Replace("/", "\\");
                 File.WriteAllText(currentPath, text);
+            }
+        }
+
+        private void RegenrateAssemblyDefinitions()
+        {
+            var hermesSettings = HermesSettings.GetOrCreateSettings();
+            
+            if (hermesSettings.UseAssemblyDefinitions)
+            {
+                string eventPath = $"{hermesSettings.EventsModulePath}/Hermes.Events.asmdef".Replace("/", "\\");
+                using (FileStream fs = File.Create(eventPath))
+                {
+                    string assemblyContent = EventsAssemblyDefinitionTemplate.text.Replace("Hermes.Events.Template", "Hermes.Events");
+                    Byte[] content = new UTF8Encoding(true).GetBytes(assemblyContent);
+                    fs.Write(content, 0, assemblyContent.Length);
+                }
+
+                string eventArgsPath = $"{hermesSettings.ArgumentsModulePath}/Hermes.EventArgs.asmdef".Replace("/", "\\");
+                using (FileStream fs = File.Create(eventArgsPath))
+                {
+                    string assemblyContent = EventArgsAssemblyDefinitionTemplate.text.Replace("Hermes.EventArgs.Template", "Hermes.EventArgs");
+                    Byte[] content = new UTF8Encoding(true).GetBytes(assemblyContent);
+                    fs.Write(content, 0, assemblyContent.Length);
+                }
             }
         }
     }
