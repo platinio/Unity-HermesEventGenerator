@@ -1,4 +1,4 @@
-﻿using System;
+/*using System;
 
 namespace ArcaneOnyx.GameEventGenerator
 {
@@ -6,4 +6,4 @@ namespace ArcaneOnyx.GameEventGenerator
     public class GameEventArgsBase
     {
     }
-}
+}*/

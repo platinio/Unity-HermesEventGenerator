@@ -2,11 +2,11 @@
     "name": "Hermes.Samples",
     "rootNamespace": "",
     "references": [
-        "GUID:567d48d7db85dfb4aaf5772ded52202a",
-        "GUID:6055be8ebefd69e48b49212b09b47b2f",
-        "GUID:4ffb04911ec55de4e9b0e690edc6cb87",
-        "GUID:018aa430baf05b848ab258278bcd56e8",
-        "GUID:50a6038dc090d114a89aa67eaebbd15b"
+        "ArcaneOnyx.ServiceLocator",
+        "Unity.TextMeshPro",
+        "Hermes.Runtime",
+        "Hermes.Events",
+        "Hermes.EventArgs"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

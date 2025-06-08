@@ -1,4 +1,4 @@
-﻿using System;
+/*using System;
 using UnityEngine;
 
 namespace ArcaneOnyx.GameEventGenerator
@@ -12,4 +12,4 @@ namespace ArcaneOnyx.GameEventGenerator
             OnGameEventRaisedEvent?.Invoke(gameEventName, args);
         }
     }
-}
+}*/

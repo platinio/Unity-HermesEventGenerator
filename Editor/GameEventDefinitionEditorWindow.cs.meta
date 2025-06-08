@@ -22,7 +22,8 @@ MonoImporter:
   - GameEventDispatcher: {fileID: 11500000, guid: 1f3f51dd381044049ef62fef3c20ba69, type: 3}
   - ISceneGameEvents: {fileID: 11500000, guid: e6ce651f46214b8a994f45485f7fd918, type: 3}
   - ScriptGraphContainer: {fileID: 11500000, guid: 3d413ceb8c4dd0d45af7153bd1087994, type: 3}
-  - AssemblyDefinitionTemplate: {fileID: 5897886265953266890, guid: 8f9af86c6eab199459ce3b6f17006286, type: 3}
+  - EventsAssemblyDefinitionTemplate: {fileID: 5897886265953266890, guid: b14d45647f1f7ff499c3daa406a3ce92, type: 3}
+  - EventArgsAssemblyDefinitionTemplate: {fileID: 5897886265953266890, guid: 8f9af86c6eab199459ce3b6f17006286, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

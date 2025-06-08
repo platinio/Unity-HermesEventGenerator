@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+/*using UnityEngine;
 
 namespace ArcaneOnyx.GameEventGenerator
 {
@@ -6,4 +6,4 @@ namespace ArcaneOnyx.GameEventGenerator
     {
         public abstract void Trigger();
     }
-}
+}*/

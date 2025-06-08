@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using ArcaneOnyx.ScriptableObjectDatabase;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
 namespace ArcaneOnyx.GameEventGenerator
@@ -44,7 +47,8 @@ namespace ArcaneOnyx.GameEventGenerator
             ScriptGraphContainer
         };
 
-        public AssemblyDefinitionAsset AssemblyDefinitionTemplate;
+        public AssemblyDefinitionAsset EventsAssemblyDefinitionTemplate;
+        public AssemblyDefinitionAsset EventArgsAssemblyDefinitionTemplate;
        
         private readonly string BaseGenerationPath = $"{Path.GetDirectoryName(Application.dataPath)}";
         
@@ -107,13 +111,26 @@ namespace ArcaneOnyx.GameEventGenerator
             CreateGameEventEnum(gameEventDefinitions);
             CreateVisualScriptingEventListener(gameEventDefinitions);
             
-            MoveOrCreateEventScripts();
-            MoveOrCreateEventArgsScripts();
+            MoveEventScripts();
+            MoveEventArgsScripts();
 
             if (hermesSettings.UseAssemblyDefinitions)
             {
-                AssetDatabase.CreateAsset(AssemblyDefinitionTemplate, $"{hermesSettings.EventsModulePath}/Hermes.Events.asmdef");
-                AssetDatabase.CreateAsset(AssemblyDefinitionTemplate, $"{hermesSettings.ArgumentsModulePath}/Hermes.EventArgs.asmdef");
+                string eventPath = $"{hermesSettings.EventsModulePath}/Hermes.Events.asmdef".Replace("/", "\\");
+                using (FileStream fs = File.Create(eventPath))
+                {
+                    string assemblyContent = EventsAssemblyDefinitionTemplate.text.Replace("Hermes.Events.Template", "Hermes.Events");
+                    Byte[] content = new UTF8Encoding(true).GetBytes(assemblyContent);
+                    fs.Write(content, 0, assemblyContent.Length);
+                }
+
+                string eventArgsPath = $"{hermesSettings.ArgumentsModulePath}/Hermes.EventArgs.asmdef".Replace("/", "\\");
+                using (FileStream fs = File.Create(eventArgsPath))
+                {
+                    string assemblyContent = EventArgsAssemblyDefinitionTemplate.text.Replace("Hermes.EventArgs.Template", "Hermes.EventArgs");
+                    Byte[] content = new UTF8Encoding(true).GetBytes(assemblyContent);
+                    fs.Write(content, 0, assemblyContent.Length);
+                }
             }
             
             AssetDatabase.Refresh();
@@ -247,21 +264,72 @@ namespace ArcaneOnyx.GameEventGenerator
             File.WriteAllText(path, scriptGraphContainer);
         }
 
-        private void MoveOrCreateEventArgsScripts()
+        private void MoveDependenciesToSafePlace()
+        {
+            string safeLocation = "Assets";
+            
+            foreach (var script in EventArgsDependencies)
+            {
+                string from = AssetDatabase.GetAssetPath(script);
+                string to = $"{safeLocation}/{script.name}.cs";
+                AssetDatabase.MoveAsset(from, to);
+            }
+            
+            foreach (var script in EventDependencies)
+            {
+                string from = AssetDatabase.GetAssetPath(script);
+                string to = $"{safeLocation}/{script.name}.cs";
+                AssetDatabase.MoveAsset(from, to);
+            }
+        }
+
+        private void MoveEventArgsScripts()
         {
             foreach (var script in EventArgsDependencies)
             {
-                string path = AssetDatabase.GetAssetPath(script);
-                AssetDatabase.MoveAsset(path, HermesSettings.GetOrCreateSettings().ArgumentsModulePath);
+                string path = $"{HermesSettings.GetOrCreateSettings().ArgumentsModulePath}/{script.name}.cs".Replace("/", "\\");
+                
+                using (FileStream fs = File.Create(path))
+                {
+                    string assemblyContent = script.text.Replace("/*", string.Empty).Replace("*/", string.Empty);
+                    Byte[] content = new UTF8Encoding(true).GetBytes(assemblyContent);
+                    fs.Write(content, 0, assemblyContent.Length);
+                }
+                
+                string text = File.ReadAllText(path);
+
+                if (!text.Contains("/*"))
+                {
+                    text = $"/*{text}*/";
+                }
+
+                string currentPath = AssetDatabase.GetAssetPath(script).Replace("/", "\\");
+                File.WriteAllText(currentPath, text);
             }
         }
         
-        private void MoveOrCreateEventScripts()
+        private void MoveEventScripts()
         {
             foreach (var script in EventDependencies)
             {
-                string path = AssetDatabase.GetAssetPath(script);
-                AssetDatabase.MoveAsset(path, HermesSettings.GetOrCreateSettings().EventsModulePath);
+                string path = $"{HermesSettings.GetOrCreateSettings().EventsModulePath}/{script.name}.cs".Replace("/", "\\");
+                
+                using (FileStream fs = File.Create(path))
+                {
+                    string assemblyContent = script.text.Replace("/*", string.Empty).Replace("*/", string.Empty);
+                    Byte[] content = new UTF8Encoding(true).GetBytes(assemblyContent);
+                    fs.Write(content, 0, assemblyContent.Length);
+                }
+                
+                string text = File.ReadAllText(path);
+
+                if (!text.Contains("/*"))
+                {
+                    text = $"/*{text}*/";
+                }
+
+                string currentPath = AssetDatabase.GetAssetPath(script).Replace("/", "\\");
+                File.WriteAllText(currentPath, text);
             }
         }
     }

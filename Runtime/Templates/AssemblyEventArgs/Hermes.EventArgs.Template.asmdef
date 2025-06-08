@@ -1,13 +1,10 @@
 {
-    "name": "Hermes.Runtime",
+    "name": "Hermes.EventArgs.Template",
     "rootNamespace": "",
     "references": [
-        "ArcaneOnyx.ScriptableObjectDatabase",
-        "ArcaneOnyx.ServiceLocator",
         "Unity.VisualScripting.Core",
         "Unity.VisualScripting.Flow",
-        "Hermes.Events",
-        "Hermes.EventArgs"
+        "ArcaneOnyx.ServiceLocator"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

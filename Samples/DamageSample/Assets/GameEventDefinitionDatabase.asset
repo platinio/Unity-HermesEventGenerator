@@ -33,11 +33,11 @@ MonoBehaviour:
   id: 29
   description: 
   args:
-  - variableType: Player
+  - variableType: Component
     variableName: from
-  - variableType: Player
+  - variableType: Component
     variableName: to
   - variableType: int
     variableName: damage
   namespaces:
-  - ArcaneOnyx.GameEventGenerator.Samples
+  - UnityEngine

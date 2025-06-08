@@ -13,21 +13,21 @@ namespace ArcaneOnyx.GameEventGenerator.Samples
         private void Start()
         {
             var sceneGameEvents = ServicesContainer.Resolve<ISceneGameEvents>();
-            //sceneGameEvents?.GameEventDispatcher.OnDoDamageGameEvent.AddListener(OnDoDamage);
+            sceneGameEvents?.GameEventDispatcher.OnDoDamageGameEvent.AddListener(OnDoDamage);
         }
 
         private void OnDestroy()
         {
             var sceneGameEvents = ServicesContainer.Resolve<ISceneGameEvents>();
-            //sceneGameEvents?.GameEventDispatcher.OnDoDamageGameEvent.RemoveListener(OnDoDamage);
+            sceneGameEvents?.GameEventDispatcher.OnDoDamageGameEvent.RemoveListener(OnDoDamage);
         }
-        /*
+        
         private void OnDoDamage(OnDoDamageEventArgs args)
         {
             //if this damage event is not for me ignore
             if (args.to != owner) return;
 
             bar.fillAmount = owner.CurrentHP / (float) owner.MaxHP;
-        }*/
+        }
     }
 }
