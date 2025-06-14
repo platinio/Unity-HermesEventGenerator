@@ -59,13 +59,13 @@ Open the Hermes editor window using Window/General/Hermes Editor
 
 ![alt text](https://github.com/platinio/Unity-HermesEventGenerator/blob/main/ReadmeResources/creatEventDefinitionStep.png?raw=true)
 
-### Fill event ddefinition
+### Fill event details
 
 ![alt text](https://github.com/platinio/Unity-HermesEventGenerator/blob/main/ReadmeResources/eventDefinitionDetails.png?raw=true)
 
-Event Details: event name and description, name is the real name you will use in code to listen and trigger this event so it has to be a code friednyl name.
+**Event Details:** event name and description, name is the real name you will use in code to listen and trigger this event so it has to be a code friednyl name.
 
-Arguments: event arguments, for each argument you have to write the type and variable name.
+**Arguments:** event arguments, for each argument you have to write the type and variable name.
 
-Namespaces: Depending in your event arguments you might need to include different namespaces, for example if you use a Rigidbody as an argument, you will need to include UnityEngine namespace.
+**Namespaces:** Depending in your event arguments you might need to include different namespaces, for example if you use a Rigidbody as an argument, you will need to include UnityEngine namespace.
 
