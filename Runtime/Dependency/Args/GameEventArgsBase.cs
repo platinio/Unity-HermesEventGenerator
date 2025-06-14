@@ -1,4 +1,5 @@
-/*using System;
+#if !HERMES_EVENTS_GENERATED
+using System;
 
 namespace ArcaneOnyx.GameEventGenerator
 {
@@ -6,4 +7,5 @@ namespace ArcaneOnyx.GameEventGenerator
     public class GameEventArgsBase
     {
     }
-}*/
+}
+#endif

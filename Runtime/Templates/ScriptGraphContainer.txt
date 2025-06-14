@@ -1,4 +1,5 @@
-﻿using ArcaneOnyx.ServiceLocator;
+﻿#if MODULE_VISUAL_SCRIPTING_EXIST
+using ArcaneOnyx.ServiceLocator;
 using Unity.VisualScripting;
 
 namespace ArcaneOnyx.GameEventGenerator
@@ -31,4 +32,4 @@ namespace ArcaneOnyx.GameEventGenerator
         {2}
     }}
 }}
-
+#endif

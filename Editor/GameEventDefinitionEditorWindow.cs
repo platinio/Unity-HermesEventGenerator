@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using ArcaneOnyx.ScriptableObjectDatabase;
 using UnityEditor;
+using UnityEditor.Build;
 using UnityEditor.UIElements;
 using UnityEditorInternal;
 using UnityEngine;
@@ -27,10 +28,31 @@ namespace ArcaneOnyx.GameEventGenerator
         //event args dependencies
         public TextAsset GameEventArgsBase;
 
+        private List<NamedBuildTarget> AllBuildTargets = new()
+        {
+            NamedBuildTarget.Standalone,
+            NamedBuildTarget.Server,
+            NamedBuildTarget.iOS,
+            NamedBuildTarget.Android,
+            NamedBuildTarget.WebGL,
+            NamedBuildTarget.WindowsStoreApps,
+            NamedBuildTarget.PS4,
+            NamedBuildTarget.PS5,
+            NamedBuildTarget.XboxOne,
+            NamedBuildTarget.tvOS,
+            NamedBuildTarget.VisionOS,
+            NamedBuildTarget.NintendoSwitch,
+            NamedBuildTarget.LinuxHeadlessSimulation,
+            NamedBuildTarget.EmbeddedLinux,
+            NamedBuildTarget.QNX
+        };
+        
         public List<TextAsset> EventArgsDependencies => new()
         {
             GameEventArgsBase
         };
+
+        private const string EVENT_DEFINE_SYMBOL = "HERMES_EVENTS_GENERATED";
 
         //events dependencies
         public TextAsset EventTriggerBase;
@@ -101,8 +123,38 @@ namespace ArcaneOnyx.GameEventGenerator
             MoveEventScripts();
             MoveEventArgsScripts();
             RegenrateAssemblyDefinitions();
+            UpdateScriptingDefineSymbols();
             
             AssetDatabase.Refresh();
+        }
+
+        private void UpdateScriptingDefineSymbols()
+        {
+            foreach (var buildTarget in AllBuildTargets)
+            {
+                if (DefineSymbolAlreadyExist(buildTarget, EVENT_DEFINE_SYMBOL)) continue;
+                
+                PlayerSettings.GetScriptingDefineSymbols(buildTarget, out string[] defines);
+               
+                
+                string[] newDefines = new string[defines.Length + 1];
+                Array.Copy(defines, newDefines, defines.Length);
+                newDefines[newDefines.Length - 1] = EVENT_DEFINE_SYMBOL;
+                
+                PlayerSettings.SetScriptingDefineSymbols(buildTarget, newDefines);
+            }
+        }
+
+        private bool DefineSymbolAlreadyExist(NamedBuildTarget buildTarget, string defineSymbol)
+        {
+            PlayerSettings.GetScriptingDefineSymbols(buildTarget, out string[] defines);
+
+            foreach (var define in defines)
+            {
+                if (define == defineSymbol) return true;
+            }
+
+            return false;
         }
 
         private void DeleteEventGenerationCode()
@@ -256,25 +308,6 @@ namespace ArcaneOnyx.GameEventGenerator
             File.WriteAllText(path, scriptGraphContainer);
         }
 
-        private void MoveDependenciesToSafePlace()
-        {
-            string safeLocation = "Assets";
-            
-            foreach (var script in EventArgsDependencies)
-            {
-                string from = AssetDatabase.GetAssetPath(script);
-                string to = $"{safeLocation}/{script.name}.cs";
-                AssetDatabase.MoveAsset(from, to);
-            }
-            
-            foreach (var script in EventDependencies)
-            {
-                string from = AssetDatabase.GetAssetPath(script);
-                string to = $"{safeLocation}/{script.name}.cs";
-                AssetDatabase.MoveAsset(from, to);
-            }
-        }
-
         private void MoveEventArgsScripts()
         {
             foreach (var script in EventArgsDependencies)
@@ -283,19 +316,31 @@ namespace ArcaneOnyx.GameEventGenerator
                 
                 using (FileStream fs = File.Create(path))
                 {
-                    string assemblyContent = script.text.Replace("/*", string.Empty).Replace("*/", string.Empty);
-                    Byte[] content = new UTF8Encoding(true).GetBytes(assemblyContent);
-                    fs.Write(content, 0, assemblyContent.Length);
+                    string newScript = script.text;
+
+                    if (newScript.Contains($"#if !{EVENT_DEFINE_SYMBOL}"))
+                    {
+                        string conditionalEnd = "#endif";
+                        newScript = newScript.Replace($"#if !{EVENT_DEFINE_SYMBOL}", string.Empty);
+                        int index = newScript.IndexOf(conditionalEnd, StringComparison.Ordinal);
+                        if (index >= 0)
+                        {
+                            newScript = newScript.Remove(index, conditionalEnd.Length);
+                        }
+                    }
+                   
+                    Byte[] content = new UTF8Encoding(true).GetBytes(newScript);
+                    fs.Write(content, 0, newScript.Length);
                 }
                 
-                string text = File.ReadAllText(path);
-
-                if (!text.Contains("/*"))
-                {
-                    text = $"/*{text}*/";
-                }
-
                 string currentPath = AssetDatabase.GetAssetPath(script).Replace("/", "\\");
+                string text = File.ReadAllText(currentPath);
+
+                if (!text.Contains($"#if !{EVENT_DEFINE_SYMBOL}"))
+                {
+                    text = $"#if !{EVENT_DEFINE_SYMBOL}\n{text}\n#endif";
+                }
+                
                 File.WriteAllText(currentPath, text);
             }
         }
@@ -308,19 +353,31 @@ namespace ArcaneOnyx.GameEventGenerator
                 
                 using (FileStream fs = File.Create(path))
                 {
-                    string assemblyContent = script.text.Replace("/*", string.Empty).Replace("*/", string.Empty);
-                    Byte[] content = new UTF8Encoding(true).GetBytes(assemblyContent);
-                    fs.Write(content, 0, assemblyContent.Length);
+                    string newScript = script.text;
+
+                    if (newScript.Contains($"#if !{EVENT_DEFINE_SYMBOL}"))
+                    {
+                        string conditionalEnd = "#endif";
+                        newScript = newScript.Replace($"#if !{EVENT_DEFINE_SYMBOL}", string.Empty);
+                        int index = newScript.IndexOf(conditionalEnd, StringComparison.Ordinal);
+                        if (index >= 0)
+                        {
+                            newScript = newScript.Remove(index, conditionalEnd.Length);
+                        }
+                    }
+                 
+                    Byte[] content = new UTF8Encoding(true).GetBytes(newScript);
+                    fs.Write(content, 0, newScript.Length);
                 }
                 
-                string text = File.ReadAllText(path);
-
-                if (!text.Contains("/*"))
-                {
-                    text = $"/*{text}*/";
-                }
-
                 string currentPath = AssetDatabase.GetAssetPath(script).Replace("/", "\\");
+                string text = File.ReadAllText(currentPath);
+
+                if (!text.Contains($"#if !{EVENT_DEFINE_SYMBOL}"))
+                {
+                    text = $"#if !{EVENT_DEFINE_SYMBOL}\n{text}\n#endif";
+                }
+               
                 File.WriteAllText(currentPath, text);
             }
         }

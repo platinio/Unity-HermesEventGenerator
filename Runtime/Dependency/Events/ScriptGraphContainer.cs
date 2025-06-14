@@ -1,4 +1,6 @@
-/*using System.Collections.Generic;
+#if !HERMES_EVENTS_GENERATED
+#if MODULE_VISUAL_SCRIPTING_EXIST
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -53,4 +55,6 @@ namespace ArcaneOnyx.GameEventGenerator
             scripthMahcineDict.Remove(scriptMachineId);
         }
     }
-}*/
+}
+#endif
+#endif

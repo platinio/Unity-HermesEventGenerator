@@ -1,4 +1,5 @@
-/*using UnityEngine;
+#if !HERMES_EVENTS_GENERATED
+using UnityEngine;
 
 namespace ArcaneOnyx.GameEventGenerator
 {
@@ -6,4 +7,5 @@ namespace ArcaneOnyx.GameEventGenerator
     {
         public abstract void Trigger();
     }
-}*/
+}
+#endif

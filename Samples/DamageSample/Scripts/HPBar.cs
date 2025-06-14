@@ -12,16 +12,21 @@ namespace ArcaneOnyx.GameEventGenerator.Samples
 
         private void Start()
         {
+#if HERMES_EVENTS_GENERATED
             var sceneGameEvents = ServicesContainer.Resolve<ISceneGameEvents>();
             sceneGameEvents?.GameEventDispatcher.OnDoDamageGameEvent.AddListener(OnDoDamage);
+#endif
         }
 
         private void OnDestroy()
         {
+#if HERMES_EVENTS_GENERATED
             var sceneGameEvents = ServicesContainer.Resolve<ISceneGameEvents>();
             sceneGameEvents?.GameEventDispatcher.OnDoDamageGameEvent.RemoveListener(OnDoDamage);
+#endif
         }
         
+#if HERMES_EVENTS_GENERATED
         private void OnDoDamage(OnDoDamageEventArgs args)
         {
             //if this damage event is not for me ignore
@@ -29,5 +34,6 @@ namespace ArcaneOnyx.GameEventGenerator.Samples
 
             bar.fillAmount = owner.CurrentHP / (float) owner.MaxHP;
         }
+#endif
     }
 }
