@@ -135,7 +135,6 @@ namespace ArcaneOnyx.GameEventGenerator
                 if (DefineSymbolAlreadyExist(buildTarget, EVENT_DEFINE_SYMBOL)) continue;
                 
                 PlayerSettings.GetScriptingDefineSymbols(buildTarget, out string[] defines);
-               
                 
                 string[] newDefines = new string[defines.Length + 1];
                 Array.Copy(defines, newDefines, defines.Length);
