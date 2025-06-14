@@ -141,4 +141,15 @@ There are separated paths for Arguments and Events code generation, you can chan
 
 The **Use Visual Scripting** bool will create the code to respond to these events from visual scripting, if you are not interested in using visual scripting or if you dont have visual scripting in your project just disable this feature.
 
+#How to debug events
+
+To debug start the game and open the hermes editor, and select the event you whish to debug and click Add Event Trigger Component.
+
+![alt text](https://github.com/platinio/Unity-HermesEventGenerator/blob/main/ReadmeResources/addEventTriggerComponent.png?raw=true)
+
+**IF** all the arguments of your event can be serialized Hermes will generated the editor so you can set the parameters by hand and trigger the event with custom parameters, when you are ready click trigger event and the event will trigger.
+
+![alt text](https://github.com/platinio/Unity-HermesEventGenerator/blob/main/ReadmeResources/triggerEventDebug.png?raw=true)
+
+
 
