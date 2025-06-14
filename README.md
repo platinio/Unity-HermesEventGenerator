@@ -49,6 +49,8 @@ Each event has a generated custom editor to trigger the events using the editor 
 
 # How to install?
 
+Import [this](https://github.com/platinio/Unity-HermesEventGenerator/releases/download/1.0.0/Unity-HermesGameEvents.unitypackage) into your project.
+
 # Getting Started
 
 ### Create scene event scope
@@ -137,8 +139,17 @@ In **Project Settings/Hermes Settings**
 
 There are separated paths for Arguments and Events code generation, you can change it bu clicking the button at the right, this is mostly if you use assembly definitions andd need this code in a specific location, otherwise you can just use the default values.
 
-The **Use Assembly Definitions** bool will create assembly definitions for you, if you dont use assembly definitions just disable this.
-
 The **Use Visual Scripting** bool will create the code to respond to these events from visual scripting, if you are not interested in using visual scripting or if you dont have visual scripting in your project just disable this feature.
+
+#How to debug events
+
+To debug start the game and open the hermes editor, and select the event you whish to debug and click Add Event Trigger Component.
+
+![alt text](https://github.com/platinio/Unity-HermesEventGenerator/blob/main/ReadmeResources/addEventTriggerComponent.png?raw=true)
+
+**IF** all the arguments of your event can be serialized Hermes will generated the editor so you can set the parameters by hand and trigger the event with custom parameters, when you are ready click trigger event and the event will trigger.
+
+![alt text](https://github.com/platinio/Unity-HermesEventGenerator/blob/main/ReadmeResources/triggerEventDebug.png?raw=true)
+
 
 
