@@ -49,17 +49,21 @@ sceneGameEvents?.GameEventDispatcher.OnDoDamageGameEvent.Raise(from, to, damage)
 
 # Getting Started
 
-## Create Event Definition
+### Create scene event scope
 
-### Open Editor Window
+There should be always a scene scope event so you can listen and trigger events in your scenes, create a new GameObject and add SceneGameEvents and GameEventDispatcher components.
+
+![alt text](https://github.com/platinio/Unity-HermesEventGenerator/blob/main/ReadmeResources/sceneGameEvents.png?raw=true)
+
+### Open the Editor Window
 
 Open the Hermes editor window using Window/General/Hermes Editor
 
-### Create new event definition
+### Create a new event definition
 
 ![alt text](https://github.com/platinio/Unity-HermesEventGenerator/blob/main/ReadmeResources/creatEventDefinitionStep.png?raw=true)
 
-### Fill event details
+### Fill the new event details
 
 ![alt text](https://github.com/platinio/Unity-HermesEventGenerator/blob/main/ReadmeResources/eventDefinitionDetails.png?raw=true)
 
@@ -75,7 +79,7 @@ Open the Hermes editor window using Window/General/Hermes Editor
 
 After defining your events Hermes will generate the code for you.
 
-### Listen to events
+### Listen to your new event
 
 ```csharp
 private void Start()
@@ -104,7 +108,7 @@ public void OnDoDamage(OnDoDamageEventArgs args)
 Notice we are using #if HERMES_EVENTS_GENERATED to encapsulate events related code, Hermes will add this scripting symbol if the events were generated, this way if you have problems with the event generation you can remove this scripting symbol by hand and still compile, this is mostly so you can still access Hermes Editor window and fix events and regenerate.
 
 
-### Trigger events
+### Trigger your new event
 
 ```csharp
 var sceneGameEvents = ServicesContainer.Resolve<ISceneGameEvents>();
