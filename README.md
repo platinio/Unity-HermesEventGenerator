@@ -43,6 +43,8 @@ sceneGameEvents?.GameEventDispatcher.OnDoDamageGameEvent.Raise(from, to, damage)
 
 #### Use Hermes Editor to Debug your events
 
+Each event has a generated custom editor to trigger the events using the editor window.
+
 ![alt text](https://github.com/platinio/Unity-HermesEventGenerator/blob/main/ReadmeResources/hermesEditorWindowDebug.png?raw=true)
 
 # How to install?
