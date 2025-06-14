@@ -71,7 +71,7 @@ Open the Hermes editor window using Window/General/Hermes Editor
 
 ![alt text](https://github.com/platinio/Unity-HermesEventGenerator/blob/main/ReadmeResources/eventDefinitionDetails.png?raw=true)
 
-**Event Details:** event name and description, name is the real name you will use in code to listen and trigger this event so it has to be a code friednyl name.
+**Event Details:** event name and description, name is the real name you will use in code to listen and trigger this event so it has to be a code friendly name.
 
 **Arguments:** event arguments, for each argument you have to write the type and variable name.
 
