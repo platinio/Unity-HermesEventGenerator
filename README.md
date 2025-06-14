@@ -69,3 +69,61 @@ Open the Hermes editor window using Window/General/Hermes Editor
 
 **Namespaces:** Depending in your event arguments you might need to include different namespaces, for example if you use a Rigidbody as an argument, you will need to include UnityEngine namespace.
 
+### Regenerate Events
+
+![alt text](https://github.com/platinio/Unity-HermesEventGenerator/blob/main/ReadmeResources/regenerateEvents.png?raw=true)
+
+After defining your events Hermes will generate the code for you.
+
+### Listen to events
+
+```csharp
+private void Start()
+{
+#if HERMES_EVENTS_GENERATED
+  var sceneGameEvents = ServicesContainer.Resolve<ISceneGameEvents>();
+  sceneGameEvents?.GameEventDispatcher.OnDoDamageGameEvent.AddListener(OnDoDamage);
+#endif
+}
+
+#if HERMES_EVENTS_GENERATED
+public void OnDoDamage(OnDoDamageEventArgs args)
+{
+  //if this damage event is not for me ignore
+  if (args.to != this) return;
+
+  HP -= args.damage;
+  if (HP <= 0)
+  {
+    HP = 0;
+    Destroy(gameObject);
+  }
+}
+#endif
+```
+Notice we are using #if HERMES_EVENTS_GENERATED to encapsulate events related code, Hermes will add this scripting symbol if the events were generated, this way if you have problems with the event generation you can remove this scripting symbol by hand and still compile, this is mostly so you can still access Hermes Editor window and fix events and regenerate.
+
+
+### Trigger events
+
+```csharp
+var sceneGameEvents = ServicesContainer.Resolve<ISceneGameEvents>();
+sceneGameEvents?.GameEventDispatcher.OnDoDamageGameEvent.Raise(from, to, damage);
+```
+
+### Remove listeners
+
+```csharp
+private void OnDestroy()
+{
+#if HERMES_EVENTS_GENERATED
+  var sceneGameEvents = ServicesContainer.Resolve<ISceneGameEvents>();
+  sceneGameEvents?.GameEventDispatcher.OnDoDamageGameEvent.RemoveListener(OnDoDamage);
+#endif
+}
+```
+
+
+
+
+
