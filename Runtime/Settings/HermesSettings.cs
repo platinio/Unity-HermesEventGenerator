@@ -1,7 +1,8 @@
 #if UNITY_EDITOR
-using System.IO;
 using UnityEditor;
 #endif
+
+using System.IO;
 using UnityEngine;
 
 namespace ArcaneOnyx.GameEventGenerator
@@ -11,10 +12,12 @@ namespace ArcaneOnyx.GameEventGenerator
         [SerializeField] private string argumentsModulePath = "Assets/Hermes.Generated/Arguments";
         [SerializeField] private string eventsModulePath = "Assets/Hermes.Generated/Events";
         [SerializeField] private bool useAssemblyDefinitions = false;
+        [SerializeField] private bool useVisualScripting = false;
 
         public string ArgumentsModulePath => argumentsModulePath;
         public string EventsModulePath => eventsModulePath;
         public bool UseAssemblyDefinitions => useAssemblyDefinitions;
+        public bool UseVisualScripting => useVisualScripting;
         
         #if UNITY_EDITOR
         public static HermesSettings GetOrCreateSettings()

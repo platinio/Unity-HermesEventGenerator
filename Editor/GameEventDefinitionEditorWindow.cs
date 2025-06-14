@@ -181,12 +181,15 @@ namespace ArcaneOnyx.GameEventGenerator
 
         private void CreateVisualScriptEventUnit(GameEventDefinition gameEventDefinition)
         {
+            var hermerSettings = HermesSettings.GetOrCreateSettings();
+            if (!hermerSettings.UseVisualScripting) return;
+            
             string eventName = gameEventDefinition.name;
 
             string scriptTemplate = VisualScriptEventUnitTemplate.text;
             string script = string.Format(scriptTemplate, eventName);
           
-            string path = $"{BaseGenerationPath}\\{HermesSettings.GetOrCreateSettings().EventsModulePath}\\{gameEventDefinition.name}GameEventUnit.cs";
+            string path = $"{BaseGenerationPath}\\{hermerSettings.EventsModulePath}\\{gameEventDefinition.name}GameEventUnit.cs";
             File.WriteAllText(path, script);
         }
 
@@ -270,6 +273,9 @@ namespace ArcaneOnyx.GameEventGenerator
 
         private void CreateVisualScriptingEventListener(IReadOnlyList<GameEventDefinition> gameEventDefinitions)
         {
+            var hermesSettings = HermesSettings.GetOrCreateSettings();
+            if (!hermesSettings.UseVisualScripting) return;
+            
             string addListeners = string.Empty;
             
             foreach (var gameEventDefinition in gameEventDefinitions)
@@ -303,7 +309,7 @@ namespace ArcaneOnyx.GameEventGenerator
             string scriptGraphContainer = ScriptGraphContainerTemplate.text;
             scriptGraphContainer = string.Format(scriptGraphContainer, addListeners, removeListeners, listenerMethods);
            
-            string path = $"{BaseGenerationPath}\\{HermesSettings.GetOrCreateSettings().EventsModulePath}\\ScriptGraphContainer.GameEvents.cs";
+            string path = $"{BaseGenerationPath}\\{hermesSettings.EventsModulePath}\\ScriptGraphContainer.GameEvents.cs";
             File.WriteAllText(path, scriptGraphContainer);
         }
 
@@ -348,6 +354,13 @@ namespace ArcaneOnyx.GameEventGenerator
         {
             foreach (var script in EventDependencies)
             {
+                //skip visual scripting if visual scripting is disabled
+                if (script == ScriptGraphContainer && 
+                    !HermesSettings.GetOrCreateSettings().UseVisualScripting)
+                {
+                    continue;
+                }
+
                 string path = $"{HermesSettings.GetOrCreateSettings().EventsModulePath}/{script.name}.cs".Replace("/", "\\");
                 
                 using (FileStream fs = File.Create(path))
