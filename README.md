@@ -49,9 +49,9 @@ Each event has a generated custom editor to trigger the events using the editor 
 
 # How to install?
 
-# Getting Started
-
 Import [this](https://github.com/platinio/Unity-HermesEventGenerator/releases/download/1.0.0/Unity-HermesGameEvents.unitypackage) into your project.
+
+# Getting Started
 
 ### Create scene event scope
 
