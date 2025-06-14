@@ -8,7 +8,7 @@ I did Hermes to fulfill certain requirements which were a deal breaker for me:
 - Auto-generated custom event units (Visual Scripting units) for each game event.
 - Support for event scopes, I can decide if I want everybody in the scene to know about something, or just let specific GameObjects and their children about an event.
 
-#### Define your custom events using the Hermes Editor Window
+### Define your custom events using the Hermes Editor Window
 
 ![alt text](https://github.com/platinio/Unity-HermesEventGenerator/blob/main/ReadmeResources/hermesEditorWindow.png?raw=true)
 
@@ -35,13 +35,13 @@ public void OnDoDamage(OnDoDamageEventArgs args)
 }
 ```
 
-#### Trigger Event
+### Trigger Event
 
 ```csharp
 sceneGameEvents?.GameEventDispatcher.OnDoDamageGameEvent.Raise(from, to, damage);
 ```
 
-#### Use Hermes Editor to Debug your events
+### Use Hermes Editor to Debug your events
 
 Each event has a generated custom editor to trigger the events using the editor window.
 
