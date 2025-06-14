@@ -12,7 +12,7 @@ I did Hermes to fulfill certain requirements which were a deal breaker for me:
 
 ![alt text](https://github.com/platinio/Unity-HermesEventGenerator/blob/main/ReadmeResources/hermesEditorWindow.png?raw=true)
 
-#### Listen to your new event
+### Listen to your new event
 
 ```csharp
 private void Start()
