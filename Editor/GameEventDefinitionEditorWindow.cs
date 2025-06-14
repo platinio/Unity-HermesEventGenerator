@@ -398,23 +398,20 @@ namespace ArcaneOnyx.GameEventGenerator
         {
             var hermesSettings = HermesSettings.GetOrCreateSettings();
             
-            if (hermesSettings.UseAssemblyDefinitions)
+            string eventPath = $"{hermesSettings.EventsModulePath}/Hermes.Events.asmdef".Replace("/", "\\");
+            using (FileStream fs = File.Create(eventPath))
             {
-                string eventPath = $"{hermesSettings.EventsModulePath}/Hermes.Events.asmdef".Replace("/", "\\");
-                using (FileStream fs = File.Create(eventPath))
-                {
-                    string assemblyContent = EventsAssemblyDefinitionTemplate.text.Replace("Hermes.Events.Template", "Hermes.Events");
-                    Byte[] content = new UTF8Encoding(true).GetBytes(assemblyContent);
-                    fs.Write(content, 0, assemblyContent.Length);
-                }
+                string assemblyContent = EventsAssemblyDefinitionTemplate.text.Replace("Hermes.Events.Template", "Hermes.Events");
+                Byte[] content = new UTF8Encoding(true).GetBytes(assemblyContent);
+                fs.Write(content, 0, assemblyContent.Length);
+            }
 
-                string eventArgsPath = $"{hermesSettings.ArgumentsModulePath}/Hermes.EventArgs.asmdef".Replace("/", "\\");
-                using (FileStream fs = File.Create(eventArgsPath))
-                {
-                    string assemblyContent = EventArgsAssemblyDefinitionTemplate.text.Replace("Hermes.EventArgs.Template", "Hermes.EventArgs");
-                    Byte[] content = new UTF8Encoding(true).GetBytes(assemblyContent);
-                    fs.Write(content, 0, assemblyContent.Length);
-                }
+            string eventArgsPath = $"{hermesSettings.ArgumentsModulePath}/Hermes.EventArgs.asmdef".Replace("/", "\\");
+            using (FileStream fs = File.Create(eventArgsPath))
+            {
+                string assemblyContent = EventArgsAssemblyDefinitionTemplate.text.Replace("Hermes.EventArgs.Template", "Hermes.EventArgs");
+                Byte[] content = new UTF8Encoding(true).GetBytes(assemblyContent);
+                fs.Write(content, 0, assemblyContent.Length);
             }
         }
     }

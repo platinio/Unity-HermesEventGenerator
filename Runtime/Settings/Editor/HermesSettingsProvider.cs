@@ -56,10 +56,8 @@ namespace ArcaneOnyx.GameEventGenerator
                         eventsModulePathSP.stringValue = selectFolderPath;
                     }
                     EditorGUILayout.EndHorizontal();
-                    
-                    EditorGUILayout.PropertyField(settings.FindProperty("useAssemblyDefinitions"));
+                  
                     EditorGUILayout.PropertyField(settings.FindProperty("useVisualScripting"));
-
                     settings.ApplyModifiedProperties();
                     
                 },
