@@ -58,6 +58,7 @@ namespace ArcaneOnyx.GameEventGenerator
                     EditorGUILayout.EndHorizontal();
                     
                     EditorGUILayout.PropertyField(settings.FindProperty("useAssemblyDefinitions"));
+                    EditorGUILayout.PropertyField(settings.FindProperty("useVisualScripting"));
 
                     settings.ApplyModifiedProperties();
                     
