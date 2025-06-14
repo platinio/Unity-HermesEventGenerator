@@ -141,7 +141,7 @@ There are separated paths for Arguments and Events code generation, you can chan
 
 The **Use Visual Scripting** bool will create the code to respond to these events from visual scripting, if you are not interested in using visual scripting or if you dont have visual scripting in your project just disable this feature.
 
-#How to debug events
+# How to debug events
 
 To debug start the game and open the hermes editor, and select the event you whish to debug and click Add Event Trigger Component.
 
