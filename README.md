@@ -51,6 +51,8 @@ Each event has a generated custom editor to trigger the events using the editor 
 
 # Getting Started
 
+Import [this](https://github.com/platinio/Unity-HermesEventGenerator/releases/download/1.0.0/Unity-HermesGameEvents.unitypackage) into your project.
+
 ### Create scene event scope
 
 There should be always a scene scope event so you can listen and trigger events in your scenes, create a new GameObject and add SceneGameEvents and GameEventDispatcher components.
@@ -136,8 +138,6 @@ In **Project Settings/Hermes Settings**
 ![alt text](https://github.com/platinio/Unity-HermesEventGenerator/blob/main/ReadmeResources/hermesSettings.png?raw=true)
 
 There are separated paths for Arguments and Events code generation, you can change it bu clicking the button at the right, this is mostly if you use assembly definitions andd need this code in a specific location, otherwise you can just use the default values.
-
-The **Use Assembly Definitions** bool will create assembly definitions for you, if you dont use assembly definitions just disable this.
 
 The **Use Visual Scripting** bool will create the code to respond to these events from visual scripting, if you are not interested in using visual scripting or if you dont have visual scripting in your project just disable this feature.
 
