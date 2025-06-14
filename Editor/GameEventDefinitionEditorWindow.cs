@@ -73,14 +73,14 @@ namespace ArcaneOnyx.GameEventGenerator
        
         private readonly string BaseGenerationPath = $"{Path.GetDirectoryName(Application.dataPath)}";
         
-        [MenuItem("Window/General/GameEvent Definition Editor Window")]
+        [MenuItem("Window/General/Hermes Editor")]
         public static void OpenEditor()
         {
             GameEventDefinitionEditorWindow wnd = GetWindow<GameEventDefinitionEditorWindow>();
             wnd.titleContent = new GUIContent(wnd.GetWindowTitle());
         }
         
-        public override string GetWindowTitle() => "Game Event Definition Editor";
+        public override string GetWindowTitle() => "Hermes Editor";
 
         protected override IReadOnlyList<GameEventDefinition> FilterEntries(IReadOnlyList<GameEventDefinition> entries) => entries;
 
