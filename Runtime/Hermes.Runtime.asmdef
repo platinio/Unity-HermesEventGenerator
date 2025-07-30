@@ -7,7 +7,9 @@
         "Unity.VisualScripting.Core",
         "Unity.VisualScripting.Flow",
         "Hermes.Events",
-        "Hermes.EventArgs"
+        "Hermes.EventArgs",
+        "Zenject",
+        "ArcaneOnyx.UnityExtensions.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
