@@ -7,22 +7,25 @@ namespace ArcaneOnyx.GameEventGenerator.Samples
     {
         [SerializeField] private CombatLogEntry logPrefab;
         
+        //james fix events
         private void Start()
         {
+            /*
 #if HERMES_EVENTS_GENERATED
             var sceneGameEvents = ServicesContainer.Resolve<ISceneGameEvents>();
             sceneGameEvents?.GameEventDispatcher.OnDoDamageGameEvent.AddListener(OnDoDamage);
-#endif
+#endif*/
         }
 
         private void OnDestroy()
         {
+            /*
 #if HERMES_EVENTS_GENERATED
             var sceneGameEvents = ServicesContainer.Resolve<ISceneGameEvents>();
             sceneGameEvents?.GameEventDispatcher.OnDoDamageGameEvent.RemoveListener(OnDoDamage);
-#endif
+#endif*/
         }
-        
+        /*
 #if HERMES_EVENTS_GENERATED
         private void OnDoDamage(OnDoDamageEventArgs args)
         {
@@ -30,6 +33,6 @@ namespace ArcaneOnyx.GameEventGenerator.Samples
             log.Create(args.from as Player, args.to as Player, args.damage);
             log.transform.SetSiblingIndex(0);
         }
-#endif
+#endif*/
     }
 }

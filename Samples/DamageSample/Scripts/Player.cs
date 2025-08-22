@@ -14,20 +14,21 @@ namespace ArcaneOnyx.GameEventGenerator.Samples
         {
             MaxHP = HP;
 
+            //JAMES FIX EVENTS
 #if HERMES_EVENTS_GENERATED
-            var sceneGameEvents = ServicesContainer.Resolve<ISceneGameEvents>();
-            sceneGameEvents?.GameEventDispatcher.OnDoDamageGameEvent.AddListener(OnDoDamage);
+            //var sceneGameEvents = ServicesContainer.Resolve<ISceneGameEvents>();
+            //sceneGameEvents?.GameEventDispatcher.OnDoDamageGameEvent.AddListener(OnDoDamage);
 #endif
         }
 
         private void OnDestroy()
         {
 #if HERMES_EVENTS_GENERATED
-            var sceneGameEvents = ServicesContainer.Resolve<ISceneGameEvents>();
-            sceneGameEvents?.GameEventDispatcher.OnDoDamageGameEvent.RemoveListener(OnDoDamage);
+            //var sceneGameEvents = ServicesContainer.Resolve<ISceneGameEvents>();
+            //sceneGameEvents?.GameEventDispatcher.OnDoDamageGameEvent.RemoveListener(OnDoDamage);
 #endif
         }
-
+/*
 #if HERMES_EVENTS_GENERATED
         public void OnDoDamage(OnDoDamageEventArgs args)
         {
@@ -41,7 +42,7 @@ namespace ArcaneOnyx.GameEventGenerator.Samples
                 Destroy(gameObject);
             }
         }
-#endif
+#endif*/
     }
 }
 

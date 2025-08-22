@@ -105,8 +105,8 @@ namespace ArcaneOnyx.GameEventGenerator
            
             DeleteEventGenerationCode();
             CreateEmptyFolders();
-            
-            var gameEventDefinitions = GetFilteredEntries();
+
+            var gameEventDefinitions = ScriptableDatabaseUtil.GetAllItems<GameEventDefinition, GameEventDefinitionDatabase>();
 
             foreach (var gameEventDefinition in gameEventDefinitions)
             {

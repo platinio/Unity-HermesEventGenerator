@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5946099227647889368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1a46adf4cb9e314aad7035f65526a82, type: 3}
+  m_Name: OnDamageGameEntity
+  m_EditorClassIdentifier: 
+  Name: OnDamageGameEntity
+  icon: {fileID: 0}
+  id: d64f373592a24a44d941b854212ff2d6_30
+  description: 
+  args:
+  - variableType: Vector3
+    variableName: HitPoint
+  - variableType: Vector3
+    variableName: Direction
+  - variableType: object
+    variableName: DamageInfo
+  - variableType: Component
+    variableName: Attacker
+  - variableType: Component
+    variableName: Target
+  - variableType: Dictionary<string, object>
+    variableName: CustomArgs
+  namespaces:
+  - UnityEngine
+  - System.Collections.Generic
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: daeb9e6aff6a4655b254ce95e10b6792, type: 3}
+  m_Name: DamageGameEvents
+  m_EditorClassIdentifier: 
+  items:
+  - {fileID: 7313367655612229962}
+  - {fileID: -5946099227647889368}
+  - {fileID: 2808680253659960752}
+  id: 32
+--- !u!114 &2808680253659960752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1a46adf4cb9e314aad7035f65526a82, type: 3}
+  m_Name: OnEntityKilled
+  m_EditorClassIdentifier: 
+  Name: OnEntityKilled
+  icon: {fileID: 0}
+  id: d64f373592a24a44d941b854212ff2d6_31
+  description: 
+  args:
+  - variableType: Component
+    variableName: Killer
+  - variableType: Component
+    variableName: Target
+  namespaces:
+  - UnityEngine
+--- !u!114 &7313367655612229962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1a46adf4cb9e314aad7035f65526a82, type: 3}
+  m_Name: OnDoDamage
+  m_EditorClassIdentifier: 
+  Name: OnDoDamage
+  icon: {fileID: 0}
+  id: 29
+  description: 
+  args:
+  - variableType: Component
+    variableName: from
+  - variableType: Component
+    variableName: to
+  - variableType: int
+    variableName: damage
+  namespaces:
+  - UnityEngine

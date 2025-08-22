@@ -10,22 +10,23 @@ namespace ArcaneOnyx.GameEventGenerator.Samples
         [SerializeField] private Player owner;
         [SerializeField] private Image bar;
 
+        //JAMES FIX EVENTS
         private void Start()
-        {
+        {/*
 #if HERMES_EVENTS_GENERATED
             var sceneGameEvents = ServicesContainer.Resolve<ISceneGameEvents>();
             sceneGameEvents?.GameEventDispatcher.OnDoDamageGameEvent.AddListener(OnDoDamage);
-#endif
+#endif*/
         }
 
         private void OnDestroy()
-        {
+        {/*
 #if HERMES_EVENTS_GENERATED
             var sceneGameEvents = ServicesContainer.Resolve<ISceneGameEvents>();
             sceneGameEvents?.GameEventDispatcher.OnDoDamageGameEvent.RemoveListener(OnDoDamage);
-#endif
+#endif*/
         }
-        
+        /*
 #if HERMES_EVENTS_GENERATED
         private void OnDoDamage(OnDoDamageEventArgs args)
         {
@@ -34,6 +35,6 @@ namespace ArcaneOnyx.GameEventGenerator.Samples
 
             bar.fillAmount = owner.CurrentHP / (float) owner.MaxHP;
         }
-#endif
+#endif*/
     }
 }
