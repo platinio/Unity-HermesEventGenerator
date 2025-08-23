@@ -20,6 +20,7 @@ namespace ArcaneOnyx.GameEventGenerator
         private void RegisterListeners()
         {{
             var sceneGameEvents = ServicesContainer.Resolve<ISceneGameEvents>();
+            if (sceneGameEvents == null) return;
             {0}            
         }}        
        
@@ -27,6 +28,7 @@ namespace ArcaneOnyx.GameEventGenerator
         private void UnregisterListeners()
         {{
             var sceneGameEvents = ServicesContainer.Resolve<ISceneGameEvents>();
+            if (sceneGameEvents == null) return;
             {1}           
         }}
         
