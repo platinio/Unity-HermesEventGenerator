@@ -1,0 +1,36 @@
+﻿#if MODULE_VISUAL_SCRIPTING_EXIST
+using ArcaneOnyx.ServiceLocator;
+using Unity.VisualScripting;
+using UnityEngine;
+
+namespace ArcaneOnyx.GameEventGenerator
+{{
+    public class ScriptGraphEventListener : MonoBehaviour
+    {{        
+        private void Start()
+        {{
+            RegisterListeners();
+        }}
+        
+        private void OnDestroy()
+        {{
+            UnregisterListeners();
+        }}
+        
+        private void RegisterListeners()
+        {{
+            var sceneGameEvents = ServicesContainer.Resolve<ISceneGameEvents>();
+            {0}            
+        }}        
+       
+        
+        private void UnregisterListeners()
+        {{
+            var sceneGameEvents = ServicesContainer.Resolve<ISceneGameEvents>();
+            {1}           
+        }}
+        
+        {2}
+    }}
+}}
+#endif

@@ -15,8 +15,10 @@ MonoImporter:
   - VisualScriptEventUnitTemplate: {fileID: 4900000, guid: 163d695e21494b4a81fe4f4f29a0c06d, type: 3}
   - GameAddListenerTemplate: {fileID: 4900000, guid: cc759b682ddf44d98e4ee0803a2a9d6e, type: 3}
   - GameRemoveListenerTemplate: {fileID: 4900000, guid: 667233cc96264715bbae8ad5f0a0d461, type: 3}
-  - GameEventListenerMethodTemplate: {fileID: 4900000, guid: f663960a7c7843e4b2a8f6cca8b4c86e, type: 3}
+  - GameEventListenerMethodTemplate: {fileID: 4900000, guid: c02e274f5103f9d4b80259dd3bed4ab5, type: 3}
+  - GameEventListenerContainerMethodTemplate: {fileID: 4900000, guid: f663960a7c7843e4b2a8f6cca8b4c86e, type: 3}
   - ScriptGraphContainerTemplate: {fileID: 4900000, guid: d9408adb06fe4608b28a63bd10064c25, type: 3}
+  - ScriptGraphEventListenerTemplate: {fileID: 4900000, guid: 2c270b7a3ad04c742bcfcc2dd12ccb50, type: 3}
   - GameEventArgsBase: {fileID: 11500000, guid: f8153c2d6cf94a4e880f6532d9305348, type: 3}
   - EventTriggerBase: {fileID: 11500000, guid: 6a4cf8206d504d9391e084822840857f, type: 3}
   - GameEventDispatcher: {fileID: 11500000, guid: 1f3f51dd381044049ef62fef3c20ba69, type: 3}

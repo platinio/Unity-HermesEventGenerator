@@ -1,7 +1,4 @@
 ﻿private void {0}GameEventRaised({0}EventArgs args)
 {{
-    foreach (var scriptMachineKeyValuePair in scripthMahcineDict)
-    {{
-        EventBus.Trigger("{0}GameEvent", scriptMachineKeyValuePair.Value.gameObject, args);
-    }}
+    EventBus.Trigger("{0}GameEvent", gameObject, args);
 }}

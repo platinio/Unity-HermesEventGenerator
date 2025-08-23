@@ -8,6 +8,7 @@ using UnityEditor.Build;
 using UnityEditor.UIElements;
 using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
 namespace ArcaneOnyx.GameEventGenerator
@@ -23,7 +24,9 @@ namespace ArcaneOnyx.GameEventGenerator
         public TextAsset GameAddListenerTemplate;
         public TextAsset GameRemoveListenerTemplate;
         public TextAsset GameEventListenerMethodTemplate;
+        public TextAsset GameEventListenerContainerMethodTemplate;
         public TextAsset ScriptGraphContainerTemplate;
+        public TextAsset ScriptGraphEventListenerTemplate;
 
         //event args dependencies
         public TextAsset GameEventArgsBase;
@@ -118,7 +121,8 @@ namespace ArcaneOnyx.GameEventGenerator
             
             CreateDispatcher(gameEventDefinitions);
             CreateGameEventEnum(gameEventDefinitions);
-            CreateVisualScriptingEventListener(gameEventDefinitions);
+            CreateScriptGraphContainer(gameEventDefinitions);
+            CreateScriptGraphEventListener(gameEventDefinitions);
             
             MoveEventScripts();
             MoveEventArgsScripts();
@@ -271,7 +275,49 @@ namespace ArcaneOnyx.GameEventGenerator
             File.WriteAllText(path, script);
         }
 
-        private void CreateVisualScriptingEventListener(IReadOnlyList<GameEventDefinition> gameEventDefinitions)
+        private void CreateScriptGraphContainer(IReadOnlyList<GameEventDefinition> gameEventDefinitions)
+        {
+            var hermesSettings = HermesSettings.GetOrCreateSettings();
+            if (!hermesSettings.UseVisualScripting) return;
+            
+            string addListeners = string.Empty;
+            
+            foreach (var gameEventDefinition in gameEventDefinitions)
+            {
+                string addListener = GameAddListenerTemplate.text;
+                addListener = string.Format(addListener, gameEventDefinition.name);
+
+                addListeners += addListener + "\n";
+            }
+            
+            string removeListeners = string.Empty;
+            
+            foreach (var gameEventDefinition in gameEventDefinitions)
+            {
+                string removeListener = GameAddListenerTemplate.text;
+                removeListener = string.Format(removeListener, gameEventDefinition.name);
+
+                removeListeners += removeListener + "\n";
+            }
+
+            string listenerMethods = string.Empty;
+
+            foreach (var gameEventDefinition in gameEventDefinitions)
+            {
+                string listenerMethod = GameEventListenerContainerMethodTemplate.text;
+                listenerMethod = string.Format(listenerMethod, gameEventDefinition.name);
+
+                listenerMethods += listenerMethod + "\n";
+            }
+
+            string scriptGraphContainer = ScriptGraphContainerTemplate.text;
+            scriptGraphContainer = string.Format(scriptGraphContainer, addListeners, removeListeners, listenerMethods);
+           
+            string path = $"{BaseGenerationPath}\\{hermesSettings.EventsModulePath}\\ScriptGraphContainer.GameEvents.cs";
+            File.WriteAllText(path, scriptGraphContainer);
+        }
+        
+        private void CreateScriptGraphEventListener(IReadOnlyList<GameEventDefinition> gameEventDefinitions)
         {
             var hermesSettings = HermesSettings.GetOrCreateSettings();
             if (!hermesSettings.UseVisualScripting) return;
@@ -306,11 +352,11 @@ namespace ArcaneOnyx.GameEventGenerator
                 listenerMethods += listenerMethod + "\n";
             }
 
-            string scriptGraphContainer = ScriptGraphContainerTemplate.text;
-            scriptGraphContainer = string.Format(scriptGraphContainer, addListeners, removeListeners, listenerMethods);
+            string scriptGraphEventListener = ScriptGraphEventListenerTemplate.text;
+            scriptGraphEventListener = string.Format(scriptGraphEventListener, addListeners, removeListeners, listenerMethods);
            
-            string path = $"{BaseGenerationPath}\\{hermesSettings.EventsModulePath}\\ScriptGraphContainer.GameEvents.cs";
-            File.WriteAllText(path, scriptGraphContainer);
+            string path = $"{BaseGenerationPath}\\{hermesSettings.EventsModulePath}\\ScriptGraphEventListener.cs";
+            File.WriteAllText(path, scriptGraphEventListener);
         }
 
         private void MoveEventArgsScripts()
