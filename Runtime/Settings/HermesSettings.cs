@@ -1,7 +1,6 @@
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-
 using System.IO;
 using UnityEngine;
 
@@ -53,8 +52,6 @@ namespace ArcaneOnyx.GameEventGenerator
             return new SerializedObject(GetOrCreateSettings());
         }
         #endif
-        
-        
     }
 }
 
