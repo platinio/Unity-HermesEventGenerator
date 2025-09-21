@@ -1,6 +1,4 @@
-#if UNITY_EDITOR
 using UnityEditor;
-#endif
 using System.IO;
 using UnityEngine;
 
@@ -15,8 +13,7 @@ namespace ArcaneOnyx.GameEventGenerator
         public string ArgumentsModulePath => argumentsModulePath;
         public string EventsModulePath => eventsModulePath;
         public bool UseVisualScripting => useVisualScripting;
-        
-        #if UNITY_EDITOR
+       
         public static HermesSettings GetOrCreateSettings()
         {
             var guids = AssetDatabase.FindAssets($"t:{typeof(HermesSettings).Name}");
@@ -47,11 +44,10 @@ namespace ArcaneOnyx.GameEventGenerator
             return settings;
         }
         
-        internal static SerializedObject GetSerializedSettings()
+        public static SerializedObject GetSerializedSettings()
         {
             return new SerializedObject(GetOrCreateSettings());
         }
-        #endif
     }
 }
 
