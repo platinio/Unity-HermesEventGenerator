@@ -3,8 +3,9 @@ using Zenject;
 
 namespace ArcaneOnyx.GameEventGenerator
 {
-    [AutoAssetGeneration("Installers/Global", "HermesGlobalInstaller")]
-    public class HermesGlobalInstaller : ScriptableObjectInstaller
+    [AutoAssetGeneration("Installers/Resources/Static", "HermesStaticInstaller")]
+    [StaticInstaller(StaticInstallerExecutionOrder.NonImportant)]
+    public class HermesStaticInstaller : ScriptableObjectInstaller
     {
         public override void InstallBindings()
         {
