@@ -9,7 +9,7 @@ namespace ArcaneOnyx.GameEventGenerator
     {
         public override void InstallBindings()
         {
-            Container.Bind<ISceneGameEvents>().To<SceneGameEvents>()
+            Container.Rebind<ISceneGameEvents>().To<SceneGameEvents>()
                 .FromInstance(FindAnyObjectByType<SceneGameEvents>());
         }
     }
