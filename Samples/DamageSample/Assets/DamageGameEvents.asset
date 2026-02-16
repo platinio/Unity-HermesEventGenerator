@@ -49,6 +49,7 @@ MonoBehaviour:
   - {fileID: -5946099227647889368}
   - {fileID: 2808680253659960752}
   id: 32
+  silenced: 1
 --- !u!114 &2808680253659960752
 MonoBehaviour:
   m_ObjectHideFlags: 0
