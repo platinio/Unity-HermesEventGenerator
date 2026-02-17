@@ -8,7 +8,6 @@ using UnityEditor.Build;
 using UnityEditor.UIElements;
 using UnityEditorInternal;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
 namespace ArcaneOnyx.GameEventGenerator
