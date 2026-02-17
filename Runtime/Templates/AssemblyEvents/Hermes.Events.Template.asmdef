@@ -5,6 +5,7 @@
         "Unity.VisualScripting.Core",
         "Unity.VisualScripting.Flow",
         "ArcaneOnyx.ServiceLocator",
+        "ArcaneOnyx.VectorVR.Runtime",
         "Hermes.EventArgs"
     ],
     "includePlatforms": [],
