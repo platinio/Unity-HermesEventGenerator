@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: daeb9e6aff6a4655b254ce95e10b6792, type: 3}
+  m_Name: UnityExtensionEvents
+  m_EditorClassIdentifier: 
+  items:
+  - {fileID: 6713435070489390086}
+  id: 1
+  silenced: 0
+--- !u!114 &6713435070489390086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1a46adf4cb9e314aad7035f65526a82, type: 3}
+  m_Name: OnApplicationQuit
+  m_EditorClassIdentifier: 
+  Name: OnApplicationQuit
+  icon: {fileID: 0}
+  id: 729e9de48abd8714b9358219f52f8e6a_0
+  description: 
+  args: []
+  namespaces: []
