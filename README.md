@@ -1,87 +1,50 @@
-# Unity-HermesEventGenerator
-I did Hermes to fulfill certain requirements which were a deal breaker for me:
+# Hermes
 
-- Support for Assembly definitions.
-- Modularity so different modules can communicate with simple events without knowing anything about each other.
-- The ability to debug these events from an editor window, so I do not need to play the game and follow certain time-consuming steps just to debug an event.
-- Don't want to use strings or enums to maintain the different events which might be hard to maintain and prone to error.
-- Auto-generated custom event units (Visual Scripting units) for each game event.
-- Support for event scopes, I can decide if I want everybody in the scene to know about something, or just let specific GameObjects and their children about an event.
+A code-generation-based event system for type-safe, decoupled communication between modules, with built-in editor debugging and Visual Scripting support.
 
-### Define your custom events using the Hermes Editor Window
+---
 
-![alt text](https://github.com/platinio/Unity-HermesEventGenerator/blob/main/ReadmeResources/hermesEditorWindow.png?raw=true)
+## Overview
 
-### Listen to your new event
+When modules need to communicate — a skill lands a hit, a character dies, a turn ends — the naive approach is direct references. Module A calls Module B directly, which creates hard dependencies and breaks the assembly definition boundaries that keep the project modular.
 
-```csharp
-private void Start()
-{
-  //register listener
-  sceneGameEvents?.GameEventDispatcher.OnDoDamageGameEvent.AddListener(OnDoDamage);
-}
+Hermes solves this with a generated event bus. You define events in an editor window, click Regenerate, and Hermes produces strongly-typed C# classes for each event. Any module can raise or listen to any event without knowing anything about the other module. No strings, no enums, no manual marshaling.
 
-public void OnDoDamage(OnDoDamageEventArgs args)
-{
-  //if this damage event is not for me ignore
-  if (args.to != this) return;
-            
-  HP -= args.damage;
-  if (HP <= 0)
-  {
-    HP = 0;
-    Destroy(gameObject);
-  }
-}
-```
+---
 
-### Trigger Event
-
-```csharp
-sceneGameEvents?.GameEventDispatcher.OnDoDamageGameEvent.Raise(from, to, damage);
-```
-
-### Use Hermes Editor to Debug your events
-
-Each event has a generated custom editor to trigger the events using the editor window.
-
-![alt text](https://github.com/platinio/Unity-HermesEventGenerator/blob/main/ReadmeResources/hermesEditorWindowDebug.png?raw=true)
-
-# How to install?
-
-Import [this](https://github.com/platinio/Unity-HermesEventGenerator/releases/download/1.0.0/Unity-HermesGameEvents.unitypackage) into your project.
-
-# Getting Started
+## Getting Started
 
 ### Create scene event scope
 
-There should be always a scene scope event so you can listen and trigger events in your scenes, create a new GameObject and add SceneGameEvents and GameEventDispatcher components.
+There should always be a scene scope event so you can listen and trigger events in your scenes. Create a new GameObject and add `SceneGameEvents` and `GameEventDispatcher` components.
 
-![alt text](https://github.com/platinio/Unity-HermesEventGenerator/blob/main/ReadmeResources/sceneGameEvents.png?raw=true)
+![Scene Game Events](https://github.com/platinio/Unity-HermesEventGenerator/blob/main/ReadmeResources/sceneGameEvents.png?raw=true)
 
 ### Open the Editor Window
 
-Open the Hermes editor window using Window/General/Hermes Editor
+Open the Hermes editor window using **Window → General → Hermes Editor**
+
+![Hermes Editor Window](https://github.com/platinio/Unity-HermesEventGenerator/blob/main/ReadmeResources/hermesEditorWindow.png?raw=true)
 
 ### Create a new event definition
 
-![alt text](https://github.com/platinio/Unity-HermesEventGenerator/blob/main/ReadmeResources/creatEventDefinitionStep.png?raw=true)
+![Create Event Definition](https://github.com/platinio/Unity-HermesEventGenerator/blob/main/ReadmeResources/creatEventDefinitionStep.png?raw=true)
 
 ### Fill the new event details
 
-![alt text](https://github.com/platinio/Unity-HermesEventGenerator/blob/main/ReadmeResources/eventDefinitionDetails.png?raw=true)
+![Event Definition Details](https://github.com/platinio/Unity-HermesEventGenerator/blob/main/ReadmeResources/eventDefinitionDetails.png?raw=true)
 
-**Event Details:** event name and description, name is the real name you will use in code to listen and trigger this event so it has to be a code friendly name.
+**Event Details:** event name and description. The name is what you will use in code to listen and trigger this event, so it must be a code-friendly name.
 
-**Arguments:** event arguments, for each argument you have to write the type and variable name.
+**Arguments:** the typed parameters the event carries. For each argument write the type and variable name.
 
-**Namespaces:** Depending in your event arguments you might need to include different namespaces, for example if you use a Rigidbody as an argument, you will need to include UnityEngine namespace.
+**Namespaces:** depending on your event arguments you may need to include additional namespaces. For example, if you use a `Rigidbody` as an argument you will need to include the `UnityEngine` namespace.
 
 ### Regenerate Events
 
-![alt text](https://github.com/platinio/Unity-HermesEventGenerator/blob/main/ReadmeResources/regenerateEvents.png?raw=true)
+![Regenerate Events](https://github.com/platinio/Unity-HermesEventGenerator/blob/main/ReadmeResources/regenerateEvents.png?raw=true)
 
-After defining your events Hermes will generate the code for you.
+After defining your events, click **Regenerate Events** and Hermes generates the code for you. It also adds `HERMES_EVENTS_GENERATED` as a scripting define symbol across all build targets.
 
 ### Listen to your new event
 
@@ -89,28 +52,28 @@ After defining your events Hermes will generate the code for you.
 private void Start()
 {
 #if HERMES_EVENTS_GENERATED
-  var sceneGameEvents = ServicesContainer.Resolve<ISceneGameEvents>();
-  sceneGameEvents?.GameEventDispatcher.OnDoDamageGameEvent.AddListener(OnDoDamage);
+    var sceneGameEvents = ServicesContainer.Resolve<ISceneGameEvents>();
+    sceneGameEvents?.GameEventDispatcher.OnDoDamageGameEvent.AddListener(OnDoDamage);
 #endif
 }
 
 #if HERMES_EVENTS_GENERATED
 public void OnDoDamage(OnDoDamageEventArgs args)
 {
-  //if this damage event is not for me ignore
-  if (args.to != this) return;
+    // If this damage event is not for me, ignore it
+    if (args.to != this) return;
 
-  HP -= args.damage;
-  if (HP <= 0)
-  {
-    HP = 0;
-    Destroy(gameObject);
-  }
+    HP -= args.damage;
+    if (HP <= 0)
+    {
+        HP = 0;
+        Destroy(gameObject);
+    }
 }
 #endif
 ```
-Notice we are using #if HERMES_EVENTS_GENERATED to encapsulate events related code, Hermes will add this scripting symbol if the events were generated, this way if you have problems with the event generation you can remove this scripting symbol by hand and still compile, this is mostly so you can still access Hermes Editor window and fix events and regenerate.
 
+Use `#if HERMES_EVENTS_GENERATED` to wrap event-related code. If event generation fails you can remove the scripting symbol by hand and the project still compiles, letting you access the Hermes Editor to fix and regenerate.
 
 ### Trigger your new event
 
@@ -121,35 +84,95 @@ sceneGameEvents?.GameEventDispatcher.OnDoDamageGameEvent.Raise(from, to, damage)
 
 ### Remove listeners
 
+Always unsubscribe in `OnDestroy` to avoid stale listeners:
+
 ```csharp
 private void OnDestroy()
 {
 #if HERMES_EVENTS_GENERATED
-  var sceneGameEvents = ServicesContainer.Resolve<ISceneGameEvents>();
-  sceneGameEvents?.GameEventDispatcher.OnDoDamageGameEvent.RemoveListener(OnDoDamage);
+    var sceneGameEvents = ServicesContainer.Resolve<ISceneGameEvents>();
+    sceneGameEvents?.GameEventDispatcher.OnDoDamageGameEvent.RemoveListener(OnDoDamage);
 #endif
 }
 ```
 
-# Hermes Settings
+---
 
-In **Project Settings/Hermes Settings**
+## Hermes Settings
 
-![alt text](https://github.com/platinio/Unity-HermesEventGenerator/blob/main/ReadmeResources/hermesSettings.png?raw=true)
+Open **Project Settings → Hermes Settings**
 
-There are separated paths for Arguments and Events code generation, you can change it by clicking the button at the right, this is mostly if you use assembly definitions andd need this code in a specific location, otherwise you can just use the default values.
+![Hermes Settings](https://github.com/platinio/Unity-HermesEventGenerator/blob/main/ReadmeResources/hermesSettings.png?raw=true)
 
-The **Use Visual Scripting** bool will create the code to respond to these events from visual scripting, if you are not interested in using visual scripting or if you dont have visual scripting in your project just disable this feature.
+There are separate paths for Arguments and Events code generation. You can change them by clicking the button on the right — useful when using assembly definitions that require generated code in a specific location. Otherwise the default values work fine.
 
-# How to debug events
+The **Use Visual Scripting** toggle generates code to raise and listen to events from Visual Scripting graphs. Disable it if you are not using Visual Scripting in your project.
 
-To debug start the game and open the hermes editor, and select the event you whish to debug and click Add Event Trigger Component.
+---
 
-![alt text](https://github.com/platinio/Unity-HermesEventGenerator/blob/main/ReadmeResources/addEventTriggerComponent.png?raw=true)
+## How to Debug Events
 
-**IF** all the arguments of your event can be serialized Hermes will generated the editor so you can set the parameters by hand and trigger the event with custom parameters, when you are ready click trigger event and the event will trigger.
+Start the game, open the Hermes editor, select the event you want to debug, and click **Add Event Trigger Component**.
 
-![alt text](https://github.com/platinio/Unity-HermesEventGenerator/blob/main/ReadmeResources/triggerEventDebug.png?raw=true)
+![Add Event Trigger Component](https://github.com/platinio/Unity-HermesEventGenerator/blob/main/ReadmeResources/addEventTriggerComponent.png?raw=true)
 
+If all the arguments of your event can be serialized, Hermes generates an inspector UI where you can set the parameters by hand and trigger the event with custom values.
 
+![Trigger Event Debug](https://github.com/platinio/Unity-HermesEventGenerator/blob/main/ReadmeResources/triggerEventDebug.png?raw=true)
 
+### Monitoring All Events
+
+`GameEventDispatcher` exposes an `OnGameEventRaisedEvent` callback that fires whenever any event is raised. Use it to log or visualize event traffic during development.
+
+---
+
+## Visual Scripting
+
+When **Use Visual Scripting** is enabled in Hermes Settings, each event gets a generated Visual Scripting unit. These units appear in the visual scripting node search and let you raise or listen to events directly inside Script Graphs without writing C#.
+
+The `ScriptGraphContainer` component manages embedded Script Graph instances on a GameObject when you need to attach Visual Scripting graphs at runtime:
+
+```csharp
+// Add a script graph at runtime
+scriptGraphContainer.AddScriptGraph(myScriptGraphAsset);
+
+// Remove when done
+scriptGraphContainer.RemoveScriptMachines(myScriptGraphAsset);
+```
+
+---
+
+## API Reference
+
+### Generated Event Pattern
+
+Every defined event follows the same pattern on `GameEventDispatcher`:
+
+```csharp
+// Raise the event
+dispatcher.On{EventName}GameEvent.Raise(arg1, arg2, ...);
+
+// Subscribe
+dispatcher.On{EventName}GameEvent.AddListener(handler);
+
+// Unsubscribe
+dispatcher.On{EventName}GameEvent.RemoveListener(handler);
+```
+
+### Key Classes
+
+| Class | Description |
+|---|---|
+| `GameEventDispatcher` | Central hub that holds all generated event properties |
+| `SceneGameEvents` | MonoBehaviour wrapper that exposes the dispatcher and registers with DI |
+| `ISceneGameEvents` | Interface resolved via `ServicesContainer` to access the dispatcher |
+| `GameEventArgsBase` | Base class for all generated event args classes |
+| `EventTriggerBase` | Base class for generated editor trigger components |
+| `ScriptGraphContainer` | Runtime manager for embedded Visual Scripting graph instances |
+
+### Resolving the Dispatcher
+
+```csharp
+var sceneEvents = ServicesContainer.Resolve<ISceneGameEvents>();
+var dispatcher  = sceneEvents?.GameEventDispatcher;
+```
