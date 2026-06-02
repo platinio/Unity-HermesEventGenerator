@@ -11,6 +11,9 @@ When modules need to communicate — a skill lands a hit, a character dies, a tu
 Hermes solves this with a generated event bus. You define events in an editor window, click Regenerate, and Hermes produces strongly-typed C# classes for each event. Any module can raise or listen to any event without knowing anything about the other module. No strings, no enums, no manual marshaling.
 
 ---
+# How to install?
+
+Import [this](https://github.com/platinio/Unity-HermesEventGenerator/releases/download/1.0.0/Unity-HermesGameEvents.unitypackage) into your project.
 
 ## Getting Started
 
