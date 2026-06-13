@@ -1,1 +1,1 @@
-﻿sceneGameEvents.GameEventDispatcher.{0}GameEvent.RemoveListener({0}GameEventRaised);
+﻿sceneGameEvents?.GameEventDispatcher.{0}GameEvent.RemoveListener({0}GameEventRaised);

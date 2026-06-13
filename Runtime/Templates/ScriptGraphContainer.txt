@@ -1,5 +1,5 @@
 ﻿#if MODULE_VISUAL_SCRIPTING_EXIST
-using ArcaneOnyx.ServiceLocator;
+using Zenject;
 using Unity.VisualScripting;
 
 namespace ArcaneOnyx.GameEventGenerator
@@ -18,14 +18,20 @@ namespace ArcaneOnyx.GameEventGenerator
         
         private void RegisterListeners()
         {{
-            var sceneGameEvents = ServicesContainer.Resolve<ISceneGameEvents>();
+             var sceneContext = FindAnyObjectByType<SceneContext>();
+             var sceneGameEvents = sceneContext.Container.Resolve<ISceneGameEvents>();
+             
             {0}            
         }}        
        
         
         private void UnregisterListeners()
         {{
-            var sceneGameEvents = ServicesContainer.Resolve<ISceneGameEvents>();
+             var sceneContext = FindAnyObjectByType<SceneContext>();
+             if (sceneContext == null) return;
+             
+             var sceneGameEvents = sceneContext.Container.Resolve<ISceneGameEvents>();
+             
             {1}           
         }}
         

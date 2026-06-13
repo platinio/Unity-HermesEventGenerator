@@ -4,8 +4,7 @@
     "references": [
         "Unity.VisualScripting.Core",
         "Unity.VisualScripting.Flow",
-        "ArcaneOnyx.ServiceLocator",
-        "ArcaneOnyx.VectorVR.Runtime"
+        "ArcaneOnyx.ServiceLocator"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

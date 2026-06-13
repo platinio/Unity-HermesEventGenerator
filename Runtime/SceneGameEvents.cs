@@ -1,5 +1,4 @@
-﻿using ArcaneOnyx.ServiceLocator;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace ArcaneOnyx.GameEventGenerator
 {
@@ -7,15 +6,5 @@ namespace ArcaneOnyx.GameEventGenerator
     {
         [SerializeField] private GameEventDispatcher gameEventDispatcher;
         public GameEventDispatcher GameEventDispatcher => gameEventDispatcher;
-
-        private void Awake()
-        {
-            ServicesContainer.Register(typeof(ISceneGameEvents), this);
-        }
-
-        private void OnDestroy()
-        {
-            ServicesContainer.Remove<ISceneGameEvents>();
-        }
     }
 }
