@@ -2,7 +2,6 @@
     "name": "Hermes.Samples",
     "rootNamespace": "",
     "references": [
-        "ArcaneOnyx.ServiceLocator",
         "Unity.TextMeshPro",
         "Hermes.Runtime",
         "Hermes.Events",

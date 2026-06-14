@@ -1,4 +1,5 @@
-﻿using ArcaneOnyx.ServiceLocator;
+﻿// TODO: ServiceLocator submodule removed — restore service resolution when re-enabling these events.
+// using ArcaneOnyx.ServiceLocator;
 using UnityEngine;
 
 namespace ArcaneOnyx.GameEventGenerator.Samples

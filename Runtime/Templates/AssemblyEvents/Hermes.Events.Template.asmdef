@@ -4,7 +4,6 @@
     "references": [
         "Unity.VisualScripting.Core",
         "Unity.VisualScripting.Flow",
-        "ArcaneOnyx.ServiceLocator",
         "Hermes.EventArgs",
         "Zenject"
     ],
