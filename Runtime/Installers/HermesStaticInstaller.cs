@@ -1,4 +1,4 @@
-using ArcaneOnyx.EditorExtension;
+using ArcaneOnyx.UnityExtensions;
 using Zenject;
 
 namespace ArcaneOnyx.GameEventGenerator
