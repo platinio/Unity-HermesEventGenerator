@@ -1,10 +1,7 @@
-#if HERMES_EVENTS_GENERATED
-using ArcaneOnyx.GameEventGenerator;
-#endif
 using UnityEngine;
 using Zenject;
 
-namespace ArcaneOnyx.EditorExtension
+namespace ArcaneOnyx.GameEventGenerator
 {
     public class UnityEvents : MonoBehaviour
     {
