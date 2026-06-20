@@ -6,7 +6,6 @@ using ArcaneOnyx.ScriptableObjectDatabase;
 using UnityEditor;
 using UnityEditor.Build;
 using UnityEditor.UIElements;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -70,8 +69,8 @@ namespace ArcaneOnyx.GameEventGenerator
             ScriptGraphContainer
         };
 
-        public AssemblyDefinitionAsset EventsAssemblyDefinitionTemplate;
-        public AssemblyDefinitionAsset EventArgsAssemblyDefinitionTemplate;
+        public TextAsset EventsAssemblyDefinitionTemplate;
+        public TextAsset EventArgsAssemblyDefinitionTemplate;
        
         private readonly string BaseGenerationPath = $"{Path.GetDirectoryName(Application.dataPath)}";
         
