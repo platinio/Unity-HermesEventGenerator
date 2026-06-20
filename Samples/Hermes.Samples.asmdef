@@ -2,10 +2,10 @@
     "name": "Hermes.Samples",
     "rootNamespace": "",
     "references": [
-        "Unity.TextMeshPro",
-        "Hermes.Runtime",
+        "Hermes.EventArgs",
         "Hermes.Events",
-        "Hermes.EventArgs"
+        "Hermes.Runtime",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -2,9 +2,9 @@
     "name": "Hermes.Events.Template",
     "rootNamespace": "",
     "references": [
+        "Hermes.EventArgs",
         "Unity.VisualScripting.Core",
         "Unity.VisualScripting.Flow",
-        "Hermes.EventArgs",
         "Zenject"
     ],
     "includePlatforms": [],

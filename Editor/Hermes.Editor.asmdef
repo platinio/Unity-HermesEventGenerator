@@ -2,11 +2,11 @@
     "name": "Hermes.Editor",
     "rootNamespace": "",
     "references": [
-        "Hermes.Runtime",
         "ArcaneOnyx.ScriptableObjectDatabase",
         "ArcaneOnyx.ScriptableObjectDatabaseEditor",
+        "Hermes.EventArgs",
         "Hermes.Events",
-        "Hermes.EventArgs"
+        "Hermes.Runtime"
     ],
     "includePlatforms": [
         "Editor"
