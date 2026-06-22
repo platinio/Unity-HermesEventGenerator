@@ -15,7 +15,7 @@ MonoBehaviour:
   Name: OnDamageGameEntity
   icon: {fileID: 0}
   id: d64f373592a24a44d941b854212ff2d6_30
-  description: 
+  description: Raised when a game entity takes damage, carrying hit point and direction, damage info, attacker, target, and custom args for reactions such as VFX, hit animations, and damage UI.
   args:
   - variableType: Vector3
     variableName: HitPoint
@@ -65,7 +65,7 @@ MonoBehaviour:
   Name: OnEntityKilled
   icon: {fileID: 0}
   id: d64f373592a24a44d941b854212ff2d6_31
-  description: 
+  description: Raised when an entity is killed, identifying the killer and the entity that died.
   args:
   - variableType: Component
     variableName: Killer
@@ -88,7 +88,7 @@ MonoBehaviour:
   Name: OnDoDamage
   icon: {fileID: 0}
   id: 29
-  description: 
+  description: Sample event raised when one entity deals damage to another, carrying the source, the target, and the damage amount.
   args:
   - variableType: Component
     variableName: from
