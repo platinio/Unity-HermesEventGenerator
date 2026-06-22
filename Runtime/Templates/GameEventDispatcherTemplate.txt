@@ -1,4 +1,5 @@
-﻿namespace ArcaneOnyx.GameEventGenerator
+﻿#if HERMES_EVENTS_GENERATED
+namespace ArcaneOnyx.GameEventGenerator
 {{
     // {{0}} game event initialization example: OnGameEntityDamage = new OnGameEntityDamageEvent(this);
 
@@ -11,3 +12,4 @@
 
     }}  
 }}
+#endif

@@ -19,23 +19,27 @@ namespace ArcaneOnyx.GameEventGenerator
         
         private void RegisterListeners()
         {{
+#if HERMES_EVENTS_GENERATED
             var sceneContext = FindAnyObjectByType<SceneContext>();
             var sceneGameEvents = sceneContext.Container.Resolve<ISceneGameEvents>();
             if (sceneGameEvents == null) return;
             
-            {0}            
+            {0}   
+#endif         
         }}        
        
         
         private void UnregisterListeners()
         {{
+#if HERMES_EVENTS_GENERATED
             var sceneContext = FindAnyObjectByType<SceneContext>();
             if (sceneContext == null) return;
             
             var sceneGameEvents = sceneContext.Container.Resolve<ISceneGameEvents>();
             if (sceneGameEvents == null) return;
             
-            {1}           
+            {1}     
+#endif      
         }}
         
         {2}

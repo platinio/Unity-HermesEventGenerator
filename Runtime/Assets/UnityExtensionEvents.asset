@@ -31,6 +31,6 @@ MonoBehaviour:
   Name: OnApplicationQuit
   icon: {fileID: 0}
   id: 729e9de48abd8714b9358219f52f8e6a_0
-  description: 
+  description: Raised when the application is quitting, letting systems unsubscribe and run shutdown cleanup.
   args: []
   namespaces: []

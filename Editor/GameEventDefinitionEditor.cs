@@ -72,7 +72,7 @@ namespace ArcaneOnyx.GameEventGenerator
                 if (dispatcher != null) return dispatcher;
             }
 
-            var sceneGameEvents = FindObjectOfType<SceneGameEvents>();
+            var sceneGameEvents = FindAnyObjectByType<SceneGameEvents>();
             if (sceneGameEvents == null) return null;
                 
             return sceneGameEvents.GetComponent<GameEventDispatcher>();

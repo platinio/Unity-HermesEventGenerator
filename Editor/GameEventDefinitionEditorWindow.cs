@@ -96,14 +96,47 @@ namespace ArcaneOnyx.GameEventGenerator
             toolbarMenu.menu.AppendAction("Save", Save);
         }
 
-        private void RegenerateEvents(DropdownMenuAction menuAction)
+        private void RegenerateEvents(DropdownMenuAction menuAction) => RegenerateEventsCore();
+
+        /// <summary>
+        /// Headless entry point for automation/installers. Creates a transient window instance so the
+        /// serialized template references (populated from the script's default references) are available,
+        /// runs generation, then disposes the instance without ever showing a window.
+        /// </summary>
+        public static void GenerateEvents()
         {
             if (EditorApplication.isPlaying)
             {
                 Debug.LogError("Can't regenerate events while playing");
                 return;
             }
-           
+
+            var window = CreateInstance<GameEventDefinitionEditorWindow>();
+            try
+            {
+                window.RegenerateEventsCore();
+            }
+            finally
+            {
+                DestroyImmediate(window);
+            }
+        }
+
+        private void RegenerateEventsCore()
+        {
+            if (EditorApplication.isPlaying)
+            {
+                Debug.LogError("Can't regenerate events while playing");
+                return;
+            }
+
+            if (GameEventArgsTemplate == null)
+            {
+                Debug.LogError("Hermes templates are not assigned. Open 'Window/General/Hermes Editor' once and run 'Regenerate Events', " +
+                               "or verify the GameEventDefinitionEditorWindow script default references.");
+                return;
+            }
+
             DeleteEventGenerationCode();
             CreateEmptyFolders();
 
@@ -420,12 +453,20 @@ namespace ArcaneOnyx.GameEventGenerator
 
                     if (newScript.Contains($"#if !{EVENT_DEFINE_SYMBOL}"))
                     {
-                        string conditionalEnd = "#endif";
-                        newScript = newScript.Replace($"#if !{EVENT_DEFINE_SYMBOL}", string.Empty);
-                        int index = newScript.IndexOf(conditionalEnd, StringComparison.Ordinal);
-                        if (index >= 0)
+                        if (script == ISceneGameEvents || script == GameEventDispatcher || script == GameEventTriggerTemplate)
                         {
-                            newScript = newScript.Remove(index, conditionalEnd.Length);
+                            //dont remove the conditional if, from the generated ISceneGameEvents to avoid interface duplication
+                            newScript = newScript.Replace($"#if !{EVENT_DEFINE_SYMBOL}", $"#if {EVENT_DEFINE_SYMBOL}");
+                        }
+                        else
+                        {
+                            string conditionalEnd = "#endif";
+                            newScript = newScript.Replace($"#if !{EVENT_DEFINE_SYMBOL}", string.Empty);
+                            int index = newScript.IndexOf(conditionalEnd, StringComparison.Ordinal);
+                            if (index >= 0)
+                            {
+                                newScript = newScript.Remove(index, conditionalEnd.Length);
+                            }
                         }
                     }
                  
