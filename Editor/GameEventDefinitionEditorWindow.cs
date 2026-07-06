@@ -232,7 +232,7 @@ namespace ArcaneOnyx.GameEventGenerator
             string script = string.Format(scriptTemplate, eventName);
           
             string path = $"{BaseGenerationPath}\\{hermerSettings.EventsModulePath}\\{gameEventDefinition.name}GameEventUnit.cs";
-            File.WriteAllText(path, script);
+            WriteGeneratedScript(path, script);
         }
 
         private void CreateDispatcherExtension(GameEventDefinition gameEventDefinition)
@@ -246,7 +246,7 @@ namespace ArcaneOnyx.GameEventGenerator
             string script = string.Format(scriptTemplate, eventName, eventArgsSignature, eventArgsNameSignature, namespaces);
 
             string path = $"{BaseGenerationPath}\\{HermesSettings.GetOrCreateSettings().EventsModulePath}\\GameEventDispatcher.{gameEventDefinition.name}.cs";
-            File.WriteAllText(path, script);
+            WriteGeneratedScript(path, script);
         }
 
         private void CreateEventArgs(GameEventDefinition gameEventDefinition)
@@ -261,7 +261,7 @@ namespace ArcaneOnyx.GameEventGenerator
             string script = string.Format(scriptTemplate, eventName, eventArgsSignature, eventArgsDeclaration, eventArgsAssignment, namespaces);
            
             string path = $"{BaseGenerationPath}\\{HermesSettings.GetOrCreateSettings().ArgumentsModulePath}\\{gameEventDefinition.name}EventArgs.cs";
-            File.WriteAllText(path, script);
+            WriteGeneratedScript(path, script);
         }
 
         private void CreateEventTrigger(GameEventDefinition gameEventDefinition)
@@ -278,7 +278,7 @@ namespace ArcaneOnyx.GameEventGenerator
             string script = string.Format(scriptTemplate, eventName, argsDeclaration, eventArgsNameSignature, namespaces);
 
             string path = $"{BaseGenerationPath}\\{HermesSettings.GetOrCreateSettings().EventsModulePath}\\{gameEventDefinition.name}GameEventTrigger.cs";
-            File.WriteAllText(path, script);
+            WriteGeneratedScript(path, script);
         }
 
         private void CreateDispatcher(IReadOnlyList<GameEventDefinition> gameEventDefinitions)
@@ -294,7 +294,7 @@ namespace ArcaneOnyx.GameEventGenerator
             string script = string.Format(scriptTemplate, awakeInitialization);
             string path = $"{BaseGenerationPath}\\{HermesSettings.GetOrCreateSettings().EventsModulePath}\\GameEventDispatcherExtension.cs";
           
-            File.WriteAllText( path, script );
+            WriteGeneratedScript( path, script );
         }
         
         private void CreateGameEventEnum(IReadOnlyList<GameEventDefinition> gameEventDefinitions)
@@ -310,7 +310,7 @@ namespace ArcaneOnyx.GameEventGenerator
             string script = string.Format(scriptTemplate, enumValues);
             string path = $"{BaseGenerationPath}\\{HermesSettings.GetOrCreateSettings().EventsModulePath}\\GameEventTypeEnum.cs";
           
-            File.WriteAllText(path, script);
+            WriteGeneratedScript(path, script);
         }
 
         private void CreateScriptGraphContainer(IReadOnlyList<GameEventDefinition> gameEventDefinitions)
@@ -352,7 +352,7 @@ namespace ArcaneOnyx.GameEventGenerator
             scriptGraphContainer = string.Format(scriptGraphContainer, addListeners, removeListeners, listenerMethods);
            
             string path = $"{BaseGenerationPath}\\{hermesSettings.EventsModulePath}\\ScriptGraphContainer.GameEvents.cs";
-            File.WriteAllText(path, scriptGraphContainer);
+            WriteGeneratedScript(path, scriptGraphContainer);
         }
         
         private void CreateScriptGraphEventListener(IReadOnlyList<GameEventDefinition> gameEventDefinitions)
@@ -394,7 +394,7 @@ namespace ArcaneOnyx.GameEventGenerator
             scriptGraphEventListener = string.Format(scriptGraphEventListener, addListeners, removeListeners, listenerMethods);
            
             string path = $"{BaseGenerationPath}\\{hermesSettings.EventsModulePath}\\ScriptGraphEventListener.cs";
-            File.WriteAllText(path, scriptGraphEventListener);
+            WriteGeneratedScript(path, scriptGraphEventListener);
         }
 
         private void MoveEventArgsScripts()
@@ -418,8 +418,9 @@ namespace ArcaneOnyx.GameEventGenerator
                         }
                     }
                    
+                    newScript = NormalizeLineEndings(newScript);
                     Byte[] content = new UTF8Encoding(true).GetBytes(newScript);
-                    fs.Write(content, 0, newScript.Length);
+                    fs.Write(content, 0, content.Length);
                 }
                 
                 string currentPath = AssetDatabase.GetAssetPath(script).Replace("/", "\\");
@@ -430,7 +431,7 @@ namespace ArcaneOnyx.GameEventGenerator
                     text = $"#if !{EVENT_DEFINE_SYMBOL}\n{text}\n#endif";
                 }
                 
-                File.WriteAllText(currentPath, text);
+                WriteGeneratedScript(currentPath, text);
             }
         }
         
@@ -470,8 +471,9 @@ namespace ArcaneOnyx.GameEventGenerator
                         }
                     }
                  
+                    newScript = NormalizeLineEndings(newScript);
                     Byte[] content = new UTF8Encoding(true).GetBytes(newScript);
-                    fs.Write(content, 0, newScript.Length);
+                    fs.Write(content, 0, content.Length);
                 }
                 
                 string currentPath = AssetDatabase.GetAssetPath(script).Replace("/", "\\");
@@ -482,8 +484,20 @@ namespace ArcaneOnyx.GameEventGenerator
                     text = $"#if !{EVENT_DEFINE_SYMBOL}\n{text}\n#endif";
                 }
                
-                File.WriteAllText(currentPath, text);
+                WriteGeneratedScript(currentPath, text);
             }
+        }
+
+        private static string NormalizeLineEndings(string text)
+        {
+            // Templates carry CRLF while generated fragments use "\n"; unify to CRLF
+            // so the Asset Store validator does not flag mixed line endings.
+            return text.Replace("\r\n", "\n").Replace("\r", "\n").Replace("\n", "\r\n");
+        }
+
+        private static void WriteGeneratedScript(string path, string content)
+        {
+            File.WriteAllText(path, NormalizeLineEndings(content), new UTF8Encoding(true));
         }
 
         private void RegenrateAssemblyDefinitions()
@@ -494,16 +508,18 @@ namespace ArcaneOnyx.GameEventGenerator
             using (FileStream fs = File.Create(eventPath))
             {
                 string assemblyContent = EventsAssemblyDefinitionTemplate.text.Replace("Hermes.Events.Template", "Hermes.Events");
+                assemblyContent = NormalizeLineEndings(assemblyContent);
                 Byte[] content = new UTF8Encoding(true).GetBytes(assemblyContent);
-                fs.Write(content, 0, assemblyContent.Length);
+                fs.Write(content, 0, content.Length);
             }
 
             string eventArgsPath = $"{hermesSettings.ArgumentsModulePath}/Hermes.EventArgs.asmdef".Replace("/", "\\");
             using (FileStream fs = File.Create(eventArgsPath))
             {
                 string assemblyContent = EventArgsAssemblyDefinitionTemplate.text.Replace("Hermes.EventArgs.Template", "Hermes.EventArgs");
+                assemblyContent = NormalizeLineEndings(assemblyContent);
                 Byte[] content = new UTF8Encoding(true).GetBytes(assemblyContent);
-                fs.Write(content, 0, assemblyContent.Length);
+                fs.Write(content, 0, content.Length);
             }
         }
     }

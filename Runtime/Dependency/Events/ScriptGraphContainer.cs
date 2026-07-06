@@ -1,4 +1,4 @@
-#if !HERMES_EVENTS_GENERATED
+﻿#if !HERMES_EVENTS_GENERATED
 #if MODULE_VISUAL_SCRIPTING_EXIST
 using System.Collections.Generic;
 using Unity.VisualScripting;

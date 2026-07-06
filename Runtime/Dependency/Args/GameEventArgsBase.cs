@@ -1,4 +1,4 @@
-#if !HERMES_EVENTS_GENERATED
+﻿#if !HERMES_EVENTS_GENERATED
 using System;
 
 namespace ArcaneOnyx.GameEventGenerator
