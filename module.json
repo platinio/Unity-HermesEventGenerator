@@ -1,0 +1,15 @@
+{
+    "name": "HermesEventGenerator",
+    "version": "1.1.0",
+    "installPath": "Assets/HermesEventGenerator",
+    "unity": "6000.1",   
+    "buildScene": "Samples/DamageSample/Sample.unity",
+    "packages": {
+        "com.unity.visualscripting": "1.9.4"
+    },
+    "dependencies": {
+        "UnityExtensions": { "repo": "platinio/unity-extensions", "version": "1.0.0" },
+        "ScriptableObjectDatabase": { "repo": "platinio/Unity-ScriptableObjectDatabase", "version": "2.1.0" },
+        "Zenject": { "repo": "platinio/Unity-Zenject", "version": "9.2.0", "optional": true }
+    }
+}
