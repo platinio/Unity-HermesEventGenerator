@@ -3,7 +3,6 @@
     "rootNamespace": "",
     "references": [
         "ArcaneOnyx.ScriptableObjectDatabase",
-        "ArcaneOnyx.UnityExtensions.Runtime",
         "Hermes.EventArgs",
         "Hermes.Events",
         "Unity.VisualScripting.Core",
