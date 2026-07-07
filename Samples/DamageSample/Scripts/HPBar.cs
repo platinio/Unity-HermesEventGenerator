@@ -12,14 +12,20 @@ namespace ArcaneOnyx.GameEventGenerator.Samples
         private void Start()
         {
 #if HERMES_EVENTS_GENERATED
-            FindAnyObjectByType<SceneGameEvents>().GameEventDispatcher.Test_OnDamageGameEvent.AddListener(OnDoDamage);
+            var sceneGameEvents = FindAnyObjectByType<SceneGameEvents>();
+            if (sceneGameEvents == null) return;
+            
+            sceneGameEvents.GameEventDispatcher.Test_OnDamageGameEvent.AddListener(OnDoDamage);
 #endif
         }
 
         private void OnDestroy()
         {
 #if HERMES_EVENTS_GENERATED
-            FindAnyObjectByType<SceneGameEvents>().GameEventDispatcher.Test_OnDamageGameEvent.RemoveListener(OnDoDamage);
+            var sceneGameEvents = FindAnyObjectByType<SceneGameEvents>();
+            if (sceneGameEvents == null) return;
+            
+            sceneGameEvents.GameEventDispatcher.Test_OnDamageGameEvent.RemoveListener(OnDoDamage);
 #endif
         }
         

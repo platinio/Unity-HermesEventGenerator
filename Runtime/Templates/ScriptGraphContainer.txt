@@ -1,6 +1,10 @@
 ﻿#if MODULE_VISUAL_SCRIPTING_EXIST
+#if MODULE_ZENJECT_EXIST
 using Zenject;
+#endif
 using Unity.VisualScripting;
+using System.Linq;
+using UnityEngine;
 
 namespace ArcaneOnyx.GameEventGenerator
 {{
@@ -18,25 +22,43 @@ namespace ArcaneOnyx.GameEventGenerator
         
         private void RegisterListeners()
         {{
-#if HERMES_EVENTS_GENERATED
-             var sceneContext = FindAnyObjectByType<SceneContext>();
-             var sceneGameEvents = sceneContext.Container.Resolve<ISceneGameEvents>();
-             
-            {0}          
-#endif  
+#if HERMES_EVENTS_GENERATED && MODULE_ZENJECT_EXIST
+            var sceneContext = FindAnyObjectByType<SceneContext>();
+            var sceneGameEvents = sceneContext.Container.Resolve<ISceneGameEvents>();
+            if (sceneGameEvents == null) return;
+            
+            {0}   
+#endif      
+#if HERMES_EVENTS_GENERATED && !MODULE_ZENJECT_EXIST          
+            var sceneGameEvents = Object.FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
+                            .OfType<ISceneGameEvents>()
+                            .FirstOrDefault();
+            if (sceneGameEvents == null) return;
+            
+            {0}   
+#endif 
         }}        
        
         
         private void UnregisterListeners()
         {{
-#if HERMES_EVENTS_GENERATED
-             var sceneContext = FindAnyObjectByType<SceneContext>();
-             if (sceneContext == null) return;
-             
-             var sceneGameEvents = sceneContext.Container.Resolve<ISceneGameEvents>();
-             
+#if HERMES_EVENTS_GENERATED && MODULE_ZENJECT_EXIST
+            var sceneContext = FindAnyObjectByType<SceneContext>();
+            if (sceneContext == null) return;
+            
+            var sceneGameEvents = sceneContext.Container.Resolve<ISceneGameEvents>();
+            if (sceneGameEvents == null) return;
+            
             {1}     
 #endif      
+#if HERMES_EVENTS_GENERATED && !MODULE_ZENJECT_EXIST        
+            var sceneGameEvents = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
+                                        .OfType<ISceneGameEvents>()
+                                        .FirstOrDefault();
+            if (sceneGameEvents == null) return;
+                        
+            {1}      
+#endif  
         }}
         
         {2}

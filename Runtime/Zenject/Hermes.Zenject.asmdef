@@ -1,0 +1,22 @@
+{
+    "name": "Hermes.Zenject",
+    "rootNamespace": "",
+    "references": [
+        "Hermes.Runtime",
+        "Hermes.Events",
+        "Hermes.EventArgs",
+        "ArcaneOnyx.UnityExtensions.Runtime",
+        "Zenject"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "MODULE_ZENJECT_EXIST"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

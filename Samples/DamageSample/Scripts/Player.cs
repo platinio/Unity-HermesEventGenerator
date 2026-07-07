@@ -13,6 +13,9 @@ namespace ArcaneOnyx.GameEventGenerator.Samples
         {
             MaxHP = HP;
 #if HERMES_EVENTS_GENERATED
+            var sceneGameEvents = FindAnyObjectByType<SceneGameEvents>();
+            if (sceneGameEvents == null) return;
+            
             FindAnyObjectByType<SceneGameEvents>().GameEventDispatcher.Test_OnDamageGameEvent.AddListener(OnDoDamage);
 #endif
         }
@@ -20,7 +23,10 @@ namespace ArcaneOnyx.GameEventGenerator.Samples
         private void OnDestroy()
         {
 #if HERMES_EVENTS_GENERATED
-            FindAnyObjectByType<SceneGameEvents>().GameEventDispatcher.Test_OnDamageGameEvent.RemoveListener(OnDoDamage);
+            var sceneGameEvents = FindAnyObjectByType<SceneGameEvents>();
+            if (sceneGameEvents == null) return;
+            
+            sceneGameEvents.GameEventDispatcher.Test_OnDamageGameEvent.RemoveListener(OnDoDamage);
 #endif
         }
 
