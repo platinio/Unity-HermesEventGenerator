@@ -1,17 +1,14 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace ArcaneOnyx.GameEventGenerator.Samples
 {
-    public class Player : MonoBehaviour
+    public class CombatLogContainer : MonoBehaviour
     {
-        [SerializeField] private int HP;
-
-        public int MaxHP { get; private set; }
-        public int CurrentHP => HP;
-
+        [SerializeField] private CombatLogEntry logPrefab;
+      
         private void Start()
         {
-            MaxHP = HP;
+            
 #if HERMES_EVENTS_GENERATED
             FindAnyObjectByType<SceneGameEvents>().GameEventDispatcher.Test_OnDamageGameEvent.AddListener(OnDoDamage);
 #endif
@@ -19,25 +16,19 @@ namespace ArcaneOnyx.GameEventGenerator.Samples
 
         private void OnDestroy()
         {
+            
 #if HERMES_EVENTS_GENERATED
             FindAnyObjectByType<SceneGameEvents>().GameEventDispatcher.Test_OnDamageGameEvent.RemoveListener(OnDoDamage);
 #endif
         }
-
+        
 #if HERMES_EVENTS_GENERATED
-        public void OnDoDamage(Test_OnDamageEventArgs args)
+        private void OnDoDamage(Test_OnDamageEventArgs args)
         {
-            //if this damage event is not for me ignore
-            if (args.to != this) return;
-            
-            HP -= args.damage;
-            if (HP <= 0)
-            {
-                HP = 0;
-                Destroy(gameObject);
-            }
+            var log = Instantiate(logPrefab, transform);
+            log.Create(args.from as Player, args.to as Player, args.damage);
+            log.transform.SetSiblingIndex(0);
         }
 #endif
     }
 }
-

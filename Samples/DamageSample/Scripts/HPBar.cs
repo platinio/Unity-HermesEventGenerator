@@ -1,6 +1,4 @@
-﻿// TODO: ServiceLocator submodule removed — restore service resolution when re-enabling these events.
-// using ArcaneOnyx.ServiceLocator;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace ArcaneOnyx.GameEventGenerator.Samples
@@ -10,32 +8,29 @@ namespace ArcaneOnyx.GameEventGenerator.Samples
     {
         [SerializeField] private Player owner;
         [SerializeField] private Image bar;
-
-        //JAMES FIX EVENTS
+      
         private void Start()
-        {/*
+        {
 #if HERMES_EVENTS_GENERATED
-            var sceneGameEvents = ServicesContainer.Resolve<ISceneGameEvents>();
-            sceneGameEvents?.GameEventDispatcher.OnDoDamageGameEvent.AddListener(OnDoDamage);
-#endif*/
+            FindAnyObjectByType<SceneGameEvents>().GameEventDispatcher.Test_OnDamageGameEvent.AddListener(OnDoDamage);
+#endif
         }
 
         private void OnDestroy()
-        {/*
+        {
 #if HERMES_EVENTS_GENERATED
-            var sceneGameEvents = ServicesContainer.Resolve<ISceneGameEvents>();
-            sceneGameEvents?.GameEventDispatcher.OnDoDamageGameEvent.RemoveListener(OnDoDamage);
-#endif*/
+            FindAnyObjectByType<SceneGameEvents>().GameEventDispatcher.Test_OnDamageGameEvent.RemoveListener(OnDoDamage);
+#endif
         }
-        /*
+        
 #if HERMES_EVENTS_GENERATED
-        private void OnDoDamage(OnDoDamageEventArgs args)
+        private void OnDoDamage(Test_OnDamageEventArgs args)
         {
             //if this damage event is not for me ignore
             if (args.to != owner) return;
 
             bar.fillAmount = owner.CurrentHP / (float) owner.MaxHP;
         }
-#endif*/
+#endif
     }
 }

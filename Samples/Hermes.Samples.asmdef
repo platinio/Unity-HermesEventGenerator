@@ -5,7 +5,8 @@
         "Hermes.EventArgs",
         "Hermes.Events",
         "Hermes.Runtime",
-        "Unity.TextMeshPro"
+        "Unity.TextMeshPro",
+        "Unity.InputSystem"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
