@@ -1,72 +1,118 @@
 #!/usr/bin/env python3
 """
-release.py - one-shot release automation for a standalone Unity tool repo.
+release.py - one-shot release automation for a standalone Unity tool/module repo.
 
-Given a version and (optionally) a path to the repo, this script does the whole
+Run it from inside a module repo with a version number and it does the whole GitHub
 release by itself:
 
-    1. Sanity-checks the working tree and that the version isn't already tagged.
-    2. Reads module.json (if present) and resolves the dependency closure: each
-       dependency's latest GitHub release .unitypackage is downloaded, and its
-       embedded module.json is read to discover transitive dependencies.
-    3. Verifies the tool LOCALLY: scaffolds a throwaway Unity project, copies the
-       tool in (plus the downloaded dependencies), makes sure it compiles, runs any
-       EditMode tests, and builds a Windows player. (Skipped with --skip-tests.)
-    4. Builds a <name>.unitypackage in pure Python (no Unity, no license needed),
-       merging the dependency packages in (deduplicated by GUID) so the release is
-       fully self-contained.
-    5. Pushes the branch, tags the release, and pushes the tag.
-    6. Creates the GitHub Release (auto-generated notes) and uploads the package.
-    7. Prints the permanent "latest download" URL for the docs.
+    1. Guards: refuses on a dirty working tree or an existing tag, and requires
+       module.json's "version" to equal the version you are releasing.
+    2. Resolves the dependency closure from module.json: downloads each REQUIRED
+       dependency's LATEST release .unitypackage, reads the module.json embedded in
+       it to discover transitive deps, and recurses. Optional deps are skipped.
+    3. If module.json declares a "sample", packs it into a separate
+       <name>.Samples.unitypackage -- the Samples~/ folder with the `~` stripped so
+       it installs as an importable Samples/.
+    4. Verifies LOCALLY in a throwaway Unity project (skip with --skip-tests):
+       the module's committed source + the downloaded dependency packages + the
+       sample package (imported, so the sample is compiled too) + the UPM "packages".
+       Compiles, runs any EditMode tests, and builds a Windows player (of "buildScene"
+       if set, else an empty scene). ANY failure aborts before anything is pushed.
+    5. Packs the core <name>.unitypackage in pure Python (no Unity/license needed),
+       merging the required dependency packages in (deduplicated by GUID) so the core
+       release is self-contained.
+    6. Pushes the branch, creates + pushes the tag, creates the GitHub Release (with
+       auto-generated notes), and uploads the core package (+ the sample package).
+    7. Prints the permanent "releases/latest/download/..." URLs for your docs.
 
-module.json (at the repo root, committed together with its .meta so it ships
-inside the package -- ModuleManager reads it in the buyer's project):
+--------------------------------------------------------------------------------
+USAGE
+--------------------------------------------------------------------------------
+From inside the module repo (most common):
+
+    python release.py 1.2.0
+
+Point at another repo / override the derived name:
+
+    python release.py 1.2.0 --repo /path/to/module --name MyModule
+
+Handy flags:
+    --skip-tests          skip the local Unity verify (faster; when already confirmed)
+    --exclude A B         extra path prefixes to keep OUT of the core package
+                          (default: ReadmeResources; the "sample" path is auto-excluded)
+    --draft/--prerelease  make the GitHub release a draft / prerelease
+    --unity <path>        explicit Unity.exe (else auto-detected from the Unity Hub for
+                          the project's version, or set UNITY_PATH)
+    --test-platforms EditMode PlayMode
+    --keep-test-project   keep the throwaway verify project on disk (to debug a failure)
+
+REQUIREMENTS
+    Python 3.9+, git on PATH, a Unity install matching the project (for the verify),
+    and a GitHub token with Contents:write. The token is read from $GITHUB_TOKEN /
+    $GH_TOKEN, or from a gitignored `.release_token` file in the repo. The `gh` CLI is
+    NOT needed -- this talks to the GitHub REST API directly.
+
+--------------------------------------------------------------------------------
+module.json  --  how to create one for a new module
+--------------------------------------------------------------------------------
+Put module.json at the repo ROOT and COMMIT it together with module.json.meta: it
+ships inside the package so ModuleManager can read it in the buyer's project, and the
+packer only packs files whose .meta is committed. Also gitignore the Unity-generated
+metas for the tooling files: release.py.meta, dist.meta, __pycache__.meta (otherwise
+release.py itself would get packed). Only "name" + "version" are required.
 
     {
-        "name": "HermesEventGenerator",
-        "version": "1.1.0",
-        "installPath": "Assets/HermesEventGenerator",
-        "unity": "6000.1",
-        "defines": ["MODULE_HERMES_EXIST"],           # optional
-        "buildScene": "Samples/DamageSample/Sample.unity",  # optional, path within the module
-        "packages": {                                 # optional: UPM deps for the verify scaffold
-            "com.unity.visualscripting": "1.9.4"
-        },
-        "dependencies": {
-            "UnityExtensions": { "repo": "platinio/unity-extensions", "version": "1.0.0" },
-            "Zenject":         { "repo": "platinio/Unity-Zenject", "version": "9.2.0", "optional": true }
+        "name": "MyModule",                     // module id + default install folder
+        "version": "1.0.0",                     // MUST equal the released version (enforced)
+        "installPath": "Assets/MyModule",       // where the package lands on import
+        "unity": "6000.1",                      // informational / ModuleManager
+
+        "packages": {                           // optional: UPM deps the CORE needs; added to
+            "com.unity.nuget.newtonsoft-json": "3.2.1"  // the verify scaffold's manifest. NOT
+        },                                      // bundled -- buyers get them from the registry.
+
+        "defines": ["MODULE_MYMODULE_EXIST"],   // optional; a define this module declares
+                                                // (see "optional dependencies" below)
+
+        "buildScene": "Samples/Demo/Demo.unity",// optional; the scene the verify's Windows
+                                                // build builds (post ~-strip path for a
+                                                // sample scene). Empty scene if omitted.
+
+        "sample": {                             // optional; a Samples~/ folder shipped as a
+            "path": "Samples~",                 // SEPARATE <name>.Samples.unitypackage (the `~`
+            "packages": {                       // is stripped -> importable Samples/). Excluded
+                "com.unity.ugui": "2.0.0",      // from the core, and compile-tested by importing
+                "com.unity.inputsystem": "1.14.0"// it into the verify. "packages" = extra UPM
+            }                                   // deps the SAMPLE needs. Shorthand: "sample":
+        },                                      // "Samples~" (no extra packages).
+
+        "dependencies": {                       // other MODULES this one needs
+            "OtherModule": {
+                "repo": "platinio/Unity-OtherModule", // fetched from its LATEST release and
+                "version": "1.0.0"                    // BUNDLED (deduped). "version" = the
+            },                                        // minimum needed (ModuleManager warnings).
+            "Zenject": {
+                "repo": "platinio/Unity-Zenject",
+                "version": "9.2.0",
+                "optional": true                // NOT fetched/bundled; the module compiles and
+            }                                   // works without it (see below).
         }
     }
 
-Field notes:
-  version      must match the version being released (enforced).
-  defines      optional; ModuleManager unions the defines of PRESENT modules.
-  buildScene   optional; the scene the pre-release Windows build builds (so the
-               build exercises real content). Empty scene if omitted.
-  packages     optional; UPM packages the module needs, added to the verify
-               scaffold's manifest (NOT bundled -- buyers get them from the registry).
-  dependencies fetched from each repo's LATEST release and bundled into the package.
-               "version" is the minimum the module needs (ModuleManager warnings).
-               "optional": true  -> NOT bundled (integration behind a define-constrained
-               assembly, e.g. Zenject); the module compiles/works without it.
+A leaf module just omits "dependencies".
 
-Local verification (step 2) needs a Unity install matching the project version.
-The script auto-detects Unity from the standard Unity Hub location; override with
---unity or the UNITY_PATH env var. Dependencies for non-self-contained tools will
-later come from a per-repo module.json; for now the scaffold is minimal.
+OPTIONAL DEPENDENCIES (make an integration optional):
+  1. Gate the integration code behind `#if MODULE_<DEP>_EXIST`.
+  2. Keep the asmdef reference to the dep -- a missing asmdef reference is a non-fatal
+     WARNING as long as the code using those types is #if'd out.
+  3. Have the DEPENDENCY module ship an [InitializeOnLoad] editor script that adds
+     MODULE_<DEP>_EXIST to the scripting define symbols when it is present (so the
+     define is set exactly when the module is there).
+  4. Mark it "optional": true here so it is not fetched/bundled.
 
-Requirements: Python 3.9+, git on PATH, a Unity install (for step 2), and a GitHub
-token in GITHUB_TOKEN (or GH_TOKEN) with `repo` + `workflow` scope.
-
-Usage (from inside the repo):
-    GITHUB_TOKEN=xxxx  python release.py 1.1
-
-Usage (pointing at a repo):
-    python release.py 1.1 --repo /path/to/tool --name MGizmos
-
-The .unitypackage format is just a gzip-compressed tar: one folder per asset,
-named by the asset's GUID (read from its .meta), containing `asset`,
-`asset.meta`, and `pathname`. That's why packing needs no Unity install.
+The .unitypackage format is a gzip-compressed tar: one folder per asset, named by the
+asset's GUID (from its .meta), holding `asset`, `asset.meta`, `pathname`. That is why
+packing needs no Unity install.
 """
 
 import argparse
