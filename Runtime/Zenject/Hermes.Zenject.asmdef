@@ -2,10 +2,10 @@
     "name": "Hermes.Zenject",
     "rootNamespace": "",
     "references": [
-        "Hermes.Runtime",
-        "Hermes.Events",
-        "Hermes.EventArgs",
         "ArcaneOnyx.UnityExtensions.Runtime",
+        "Hermes.EventArgs",
+        "Hermes.Events",
+        "Hermes.Runtime",
         "Zenject"
     ],
     "includePlatforms": [],
