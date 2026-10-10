@@ -58,12 +58,13 @@ namespace ArcaneOnyx.GameEventGenerator
                     EditorGUILayout.EndHorizontal();
                   
                     EditorGUILayout.PropertyField(settings.FindProperty("useVisualScripting"));
+                    EditorGUILayout.PropertyField(settings.FindProperty("extraAssemblyReferences"), includeChildren: true);
                     settings.ApplyModifiedProperties();
                     
                 },
 
                 // Populate the search keywords to enable smart search filtering and label highlighting:
-                keywords = new HashSet<string>(new[] { "Hermes", "Events" })
+                keywords = new HashSet<string>(new[] { "Hermes", "Events", "Assembly", "References" })
             };
 
             return provider;

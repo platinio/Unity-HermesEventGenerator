@@ -111,6 +111,14 @@ There are separate paths for Arguments and Events code generation. You can chang
 
 The **Use Visual Scripting** toggle generates code to raise and listen to events from Visual Scripting graphs. Disable it if you are not using Visual Scripting in your project.
 
+### Events that carry your own types
+
+The generated code lives in two assemblies, `Hermes.EventArgs` and `Hermes.Events`, and they only reference what Hermes itself needs. When an event argument is a type from one of your own assembly definitions (for example a `DamageInfo` declared in `MyGame.Combat`), the generated code does not compile until both generated assemblies reference that assembly.
+
+Add its assembly definition to **Extra Assembly References** in the Hermes settings and click **Regenerate Events**. Hermes writes every listed assembly into the references of both generated assembly definitions, sorted together with the ones Hermes already needs and without duplicates. The assembly name is read from the assembly definition file on every generation, so a renamed assembly is followed. Empty entries are skipped, and with an empty list the generated assembly definitions are exactly what they were before this setting existed.
+
+**A listed assembly must not use Hermes.** The generated assemblies reference it, so it cannot reference `Hermes.Events` or `Hermes.EventArgs` back, directly or through another assembly (`Hermes.Runtime` references both), because Unity does not compile assemblies that reference each other in a circle. Hermes checks this before it deletes or generates anything. When a listed assembly breaks the rule, it logs an error naming that assembly and leaves the existing generated code untouched. Keep the types your events carry in an assembly that does not use Hermes, and raise and listen to the events from another one.
+
 ---
 
 ## How to Debug Events
