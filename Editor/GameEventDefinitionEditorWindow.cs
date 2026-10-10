@@ -137,6 +137,17 @@ namespace ArcaneOnyx.GameEventGenerator
                 return;
             }
 
+            // Checked before anything is deleted, so a refused generation leaves the existing generated code untouched.
+            string whyAnExtraAssemblyCannotBeReferenced = ExtraAssemblyReferenceRules.FindWhyAnExtraAssemblyCannotBeReferenced(
+                HermesSettings.GetOrCreateSettings().ReadExtraAssemblyReferenceNames(),
+                ProjectAssemblyDefinitions.ReadNamesOfReferences);
+
+            if (whyAnExtraAssemblyCannotBeReferenced != null)
+            {
+                Debug.LogError(whyAnExtraAssemblyCannotBeReferenced);
+                return;
+            }
+
             DeleteEventGenerationCode();
             CreateEmptyFolders();
 
@@ -503,11 +514,13 @@ namespace ArcaneOnyx.GameEventGenerator
         private void RegenrateAssemblyDefinitions()
         {
             var hermesSettings = HermesSettings.GetOrCreateSettings();
+            var extraAssemblyReferences = hermesSettings.ReadExtraAssemblyReferenceNames();
             
             string eventPath = $"{hermesSettings.EventsModulePath}/Hermes.Events.asmdef".Replace("/", "\\");
             using (FileStream fs = File.Create(eventPath))
             {
                 string assemblyContent = EventsAssemblyDefinitionTemplate.text.Replace("Hermes.Events.Template", "Hermes.Events");
+                assemblyContent = AssemblyDefinitionReferences.WithExtraReferences(assemblyContent, extraAssemblyReferences);
                 assemblyContent = NormalizeLineEndings(assemblyContent);
                 Byte[] content = new UTF8Encoding(true).GetBytes(assemblyContent);
                 fs.Write(content, 0, content.Length);
@@ -517,6 +530,7 @@ namespace ArcaneOnyx.GameEventGenerator
             using (FileStream fs = File.Create(eventArgsPath))
             {
                 string assemblyContent = EventArgsAssemblyDefinitionTemplate.text.Replace("Hermes.EventArgs.Template", "Hermes.EventArgs");
+                assemblyContent = AssemblyDefinitionReferences.WithExtraReferences(assemblyContent, extraAssemblyReferences);
                 assemblyContent = NormalizeLineEndings(assemblyContent);
                 Byte[] content = new UTF8Encoding(true).GetBytes(assemblyContent);
                 fs.Write(content, 0, content.Length);
