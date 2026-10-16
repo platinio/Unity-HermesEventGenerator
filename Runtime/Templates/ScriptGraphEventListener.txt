@@ -30,7 +30,11 @@ namespace ArcaneOnyx.GameEventGenerator
             {0}   
 #endif      
 #if HERMES_EVENTS_GENERATED && !MODULE_ZENJECT_EXIST          
+#if UNITY_6000_4_OR_NEWER
+            var sceneGameEvents = Object.FindObjectsByType<MonoBehaviour>()
+#else
             var sceneGameEvents = Object.FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
+#endif
                             .OfType<ISceneGameEvents>()
                             .FirstOrDefault();
             if (sceneGameEvents == null) return;
@@ -52,7 +56,11 @@ namespace ArcaneOnyx.GameEventGenerator
             {1}     
 #endif      
 #if HERMES_EVENTS_GENERATED && !MODULE_ZENJECT_EXIST        
+#if UNITY_6000_4_OR_NEWER
+            var sceneGameEvents = FindObjectsByType<MonoBehaviour>()
+#else
             var sceneGameEvents = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
+#endif
                                                     .OfType<ISceneGameEvents>()
                                                     .FirstOrDefault();
             if (sceneGameEvents == null) return;
